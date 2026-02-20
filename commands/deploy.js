@@ -18,7 +18,7 @@ exports.run = (client, message, args) => {
 
   var local = client.charcall.charData(client,charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
-  const phernalia = ["cruxtruder","totem lathe","alchemiter","pre-punched card","punch designix","instant alchemiter","transportalizer"]
+  const phernalia = ["cruxtruder","totem lathe","alchemiter","pre-punched card","punch designix","instant alchemiter","transportalizer","grist torrent cd"]
 
   let compCheck = client.traitcall.compTest(client,message,charid,room);
 
@@ -201,18 +201,23 @@ if(!args[0] || args[0] == "page") {
             prospitRep:0,
             derseRep:0,
             underlingRep:-1,
-            playerRep:0,
+            playerRep:1,
             consortRep:10,
             prefTarg:[],
             xp:0,
             rung:0,
             b:0,
             bio:`${client.charcall.charData(client,targcharid,"name").toUpperCase()}'S SPRITE`,
-            img:"https://media.discordapp.net/attachments/808210897008984087/808224784856514560/Kernelsprite-gray.gif"
+            img:"https://media.discordapp.net/attachments/808210897008984087/808224784856514560/Kernelsprite-gray.gif",
+			following:"NONE",
+			followers:[]
           }
           client.npcMap.set(spriteID,spriteSheet);
 
           clientSec[0][0][2][value[1]][4].push([false,spriteID]);
+		  client.sburbMap.set(clientid,spriteID,"spriteID");
+		  
+		  client.charcall.beginFollow(client,userid,spriteID,clientid);
 
         }
 
@@ -263,6 +268,7 @@ if(!args[0] || args[0] == "page") {
 
   let deployedItem = registry[value[0]][0].toUpperCase();
   message.channel.send(`Deployed the ${deployedItem}`);
+  client.landcall.displayRoom(client,message,clientSec[0][0][2][value[1]]);
 
   let alertClientList = ["CRUXTRUDER","TOTEM LATHE","ALCHEMITER","PRE-PUNCHED CARD","PUNCH DESIGNIX","INSTANT ALCHEMIZER","TRANSPORTALIZER"];
   if(alertClientList.includes(deployedItem)&&client.charcall.charData(client,targcharid,"local")[0]=="h"){

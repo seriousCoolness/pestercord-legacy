@@ -2,8 +2,11 @@ exports.type = "author";
 exports.desc = "Teleport another character to you";
 exports.use = `">tphere [player ping]" will teleport a character to your currently possessed character.`;
 exports.run = (client, message, args) => {
-
-  if(!client.funcall.dmcheck(client,message)){
+ 
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  
+  if(!client.funcall.dmcheck(client,message)&&!client.traitcall.traitCheck(client,charid,"SPACE")[1]){
     message.channel.send("You must have the SPACE set bonus or be a DM to teleport!");
     return;
   }
@@ -37,6 +40,6 @@ if(client.charcall.charData(client,targetid,"strife")){
     mapCheck=false;
   }
 
-  client.funcall.move(client,message,targetid,target,local,mapCheck,`Teleporting to **${client.charcall.charData(client,targetid,"name")}**\nEntering a `);
+  client.funcall.move(client,message,targetid,target,local,mapCheck,`Teleporting to **${client.charcall.charData(client,charid,"name")}**\nEntering a `);
 
 }

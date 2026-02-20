@@ -8,8 +8,10 @@ exports.run = (client, message, args) => {
 
 
   let local = client.charcall.charData(client,charid,"local");
+  let sec = client.landMap.get(local[4],local[0]);
 
-  if(((!client.charcall.allData(client,userid,charid,"godtier")||client.charcall.allData(client,userid,charid,"godtier")=="NONE")&&!client.funcall.dmcheck(client,message)&&!client.traitcall.traitCheck(client,charid,"ROCKET")[1]&&!client.traitcall.traitCheck(client,charid,"SPACE")[0]&&local[0]!="p"&&local[0]!="pm"&&local[0]!="d"&&local[0]!="dm")){
+
+  if(!client.charcall.canFly(client,userid,charid)&&!client.funcall.dmcheck(client,message)){
     message.channel.send("You close your eyes and believe as hard as you can in the idea that maybe with a little bit of magic and a little bit of pixie dust you might be able to fly... you open your eyes to find your feet still planeted firmly on the ground as you remember that magic most definitely is not real.");
     return;
   }
@@ -39,8 +41,21 @@ exports.run = (client, message, args) => {
   }
 
   let target = [local[0],x,y,0,local[4]];
+  
+  let occOld = sec[local[1]][local[2]][2][local[3]][4];
+  for(let i=0;i<occOld.length;i++){
+    try{
+      if(occOld[i][1]!=charid){
+      client.funcall.chanMsg(client,occOld[i][1],`**${client.charcall.charData(client,charid,"name").toUpperCase()}** has flown away somewhere!`);
+    }
 
-    client.funcall.actionCheck(client,message);
+    }catch(err){
+      console.log(err);
+    }
+  }
+	
+  client.charcall.checkFollowersCanFollow(client,userid,charid,"FLY");
+  client.funcall.actionCheck(client,message);
   let move = client.funcall.move(client,message,charid,local,target,true,`You take flight and land at a `);
   setTimeout(function(){client.tutorcall.progressCheck(client,message,40);},1500);
 }

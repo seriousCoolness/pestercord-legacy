@@ -10,7 +10,8 @@ const debugOptions = [
   ["boons","gives a number of BOONDOLLARS equal to the provided amount."],
   ["wallet","captchalogues ANY item."],
   ["void","destroys an item completely."],
-  ["fog","adds or removes fog for the current map."]
+  ["fog","adds or removes fog for the current map."],
+  ["display","prints current section, area, or room"]
 ];
 
 exports.run = function(client,message,args){
@@ -223,6 +224,28 @@ exports.run = function(client,message,args){
       return;
     }
     break;
+	
+	case "display": {
+		if (args[1]=="sec") {
+			console.log(client.landcall.currentSection(client,message));
+			message.channel.send(`Check console!`);
+		}
+		if (args[1]=="area") {
+			console.log(client.landcall.currentArea(client,message));
+			message.channel.send(`Check console!`);
+		}
+		if (args[1]=="room") {
+			console.log(client.landcall.currentRoom(client,message));
+			message.channel.send(`Check console!`);
+		}
+		if (args[1]=="planet") {
+			let charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
+			let local = client.charcall.charData(client,charid,"local");
+			message.channel.send(`Planet ID: ${local[4]}`);
+		}
+		return;
+	}
+	break;
   }
 
   // Debug options that allow pinging a player

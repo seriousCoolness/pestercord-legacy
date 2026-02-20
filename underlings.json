@@ -1,7 +1,7 @@
 {
   "imp":{
     "stm":4,
-    "vit":25,
+    "vit":15,
     "av":3,
     "d":5,
     "bd":[1,4],
@@ -96,37 +96,37 @@
     "av":11,
     "d":160,
     "bd":[16,160],
-    "act":["abuse","absorb","arsonate","actualize","abscond"],
+    "act":["abuse","absorb","arsonate","actualize","artillerate","abscond"],
     "stats":[5,5,3,5,2,1],
-    "prefMove":"none",
+    "prefMove":"arsonate",
     "xp":2048,
     "drop":3125,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234220866240522/titachnid_base.png"
   },
   "hecatoncheires":{
     "stm":10,
-    "vit":1600,
+    "vit":1200,
     "av":11,
-    "prefMove":"abuse",
+    "prefMove":"artillerate",
     "d":160,
-    "bd":[16,160],
-    "act":["abuse","abscond"],
+    "bd":[16,460],
+    "act":["abuse","arrogate","artillerate","abscond"],
     "stats":[5,5,3,5,2,1],
-    "xp":2048,
+    "xp":4096,
     "drop":6250,
-    "img":"https://media.discordapp.net/attachments/408119077840617493/808234220866240522/titachnid_base.png"
+    "img":"https://file.garden/Z_W1uUldwUL6rf2p/hecatonchires.png"
   },
   "denizen":{
     "stm":12,
     "vit":3000,
     "av":13,
-    "d":1000,
+    "d":300,
     "bd":[300,1000],
-    "act":["arrive","abuse","abscond"],
+    "act":["arrive","actualize","arise","arrogate","arrest","arraign","artillerate","abuse","abscond"],
     "stats":[0,0,0,0,0,0],
     "prefMove":"none",
-    "xp":6000,
-    "drop":14000,
+    "xp":999999,
+    "drop":100000,
     "img":""
   },
   "player":{
@@ -180,7 +180,7 @@
     "bd":[3,12],
     "act":["aggrieve","abscond"],
     "stats":[0,0,0,0,0,0],
-    "xp":2
+    "xp":4
   },
   "large carapacian":{
     "stm":8,
@@ -191,18 +191,19 @@
     "bd":[4,16],
     "act":["aggrieve","abscond"],
     "stats":[0,0,0,0,0,0],
-    "xp":2
+    "xp":16
   },
-  "arhagent":{
-    "stm":10,
-    "vit":300,
+  "archagent":{
+    "stm":16,
+    "vit":8000,
     "av":14,
-    "prefMove":"none",
-    "d":25,
-    "bd":[5,20],
-    "act":["aggrieve","abscond"],
+    "prefMove":"accomplish",
+    "d":100,
+    "bd":[20,800],
+    "act":["accomplish","artillerate","actualize","assess","assure","assimilate","assassinate","abscond"],
     "stats":[0,0,0,0,0,0],
-    "xp":2
+	"drop":0,
+    "xp":10000
   },
   "shopkeep":{
     "stm":8,

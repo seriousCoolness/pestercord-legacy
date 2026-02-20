@@ -26,7 +26,7 @@
 
   "CANDY":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757540217028628/CANDY.png",
-  "trait":"Item can be consumed for STAMINA",
+  "trait":"Item can be consumed for STAMINA, based on tier",
 
   "set":"STAMINA +1"},
 
@@ -38,31 +38,31 @@
 
   "HOT":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757595413282816/HOT.png",
-  "trait":"1d12 chance to inflict BURN condition",
+  "trait":"Rolls 1d12 to inflict BURN. Chance increases every 4 tiers",
 
   "set":"Add additional damage equal to BD against burned creatures"},
 
   "COLD":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757546441506836/COLD.png",
-  "trait":"1d12 chance to inflict FROSTBITE condition",
+  "trait":"Rolls 1d12 to inflict FROSTBITE. Chance increases every 4 tiers",
 
   "set":"When a frostbite roll succeeds, target is also DAZED for one round."},
 
   "ELECTRIC":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757571825565696/ELECTRIC.png",
-  "trait":"1d12 chance to inflict STUN condition",
+  "trait":"Rolls 1d12 to inflict STUN. Chance increases every 4 tiers",
 
   "set":"Immunity to the STUN condition"},
 
   "SHARP":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757632147521556/SHARP.png",
-  "trait":"1d12 chance to inflict BLEED condition",
+  "trait":"Rolls 1d12 to inflict BLEED. Chance increases every 4 tiers",
 
   "set":"BONUS DAMAGE rolls are FAVORABLE."},
 
   "BLUNT":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757527902683206/BLUNT.png",
-  "trait":"1d12 chance to inflict DAZE condition",
+  "trait":"Rolls 1d12 to inflict DAZE. Chance increases every 4 tiers",
 
   "set":"1d12 DAZE chance reduced to 1d6"},
 
@@ -80,7 +80,7 @@
 
   "SPOOKY":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757639285702666/SPOOKY.png",
-  "trait":"1d12 chance to inflict haunt",
+  "trait":"Rolls 1d12 to inflict HAUNT. Chance increases every 4 tiers",
 
   "set":"Haunted creatures deal half damage to you"},
 
@@ -116,13 +116,13 @@
 
   "BOUNCY":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757530686652486/BOUNCY.png",
-  "trait":"1d12 chance to attack twice (lvl 1 damage)",
+  "trait":"1d12 chance to attack twice (lvl 1 damage) Effected by tier.",
 
-  "set":"1d12 chance reduced to 1d6"},
+  "set":"Chance die size is halved."},
 
   "STICKY":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757727639109652/STICKY.png",
-  "trait":"1d12 chance to inflict grapple",
+  "trait":"Rolls 1d12 to inflict GRAPPLE. Chance increases every 4 tiers",
 
   "set":"Add additional damage equal to BD against grappled creatures"},
 
@@ -152,7 +152,7 @@
 
   "VAMPIRIC":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757762263482399/VAMPIRIC.png",
-  "trait":"1d12 chance to inflict BLEED",
+  "trait":"Rolls 1d12 to inflict BLEED. Chance increases every 4 tiers",
 
   "set":"If TARGET is BLEEDING, heal all BD dealt"},
 
@@ -218,7 +218,7 @@
 
   "THORNS":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808782820075634698/THORNS.png",
-  "trait":"1d12 chance to inflict attacker with the BLEED condition",
+  "trait":"Rolls 1d12 to inflict BLEED. Chance increases every 4 tiers",
 
   "set":"Whenever someone attacks you, they take BR in damage"},
 
@@ -236,7 +236,7 @@
 
   "IRRADIATED":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808840185940803665/IRRADIATED.png",
-  "trait":"1d12 chance to inflict BURN condition",
+  "trait":"Rolls 1d12 to inflict BURN. Chance increases every 4 tiers",
 
   "set":"Burn all enemies on a crit"},
 
@@ -260,7 +260,7 @@
 
   "GRIMDARK":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808848869289885716/GRIMDARK.png",
-  "trait":"1d12 chance to inflict HAUNT condition",
+  "trait":"Rolls 1d12 to inflict HAUNT. Chance increases every 4 tiers",
 
   "set":"Use AP as stamina"},
 
@@ -308,19 +308,19 @@
 
   "HEART":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808873732654497792/HEART.png",
-  "trait":"1d20 for damage to heal you instead",
+  "trait":"1d20 for damage to heal you instead. Effected by tier",
 
   "set":"AT THE START OF YOUR TURN, YOU PERFORM A RANDOM ACTION THAT COSTS 0 STAMINA."},
 
   "RAGE":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808873397390934036/RAGE.png",
-  "trait":"1d6 chance to inflict STUN",
+  "trait":"1d6 chance to inflict STUN. Effected by tier",
 
   "set":"Crit damage is doubled"},
 
   "BLOOD":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808874562346680360/BLOOD.png",
-  "trait":"1d12 chance to change target of attack targetting you",
+  "trait":"1d12 chance to change target of attack targetting you. Effected by tier",
 
   "set":"WHENEVER AFFLICTED WITH A CONDITION, ALL HOSTILE COMBATANTS ARE AFFLICTED WITH THE SAME CONDITION."},
 

@@ -46,7 +46,7 @@ exports.run = (client, message, args) => {
 	{
 		if(room[5][value][0]=="CRUXTRUDER")
 		{
-			message.channel.send("You can't pick that up! I'll assume you wanted a dowel instead.");
+			message.channel.send(`You can't pick that up! I'll assume you wanted a dowel instead. Try >captcha ${args[0]} 1.`);
 			targetItem = room[5][value][4][0];
 		}
 		else if(room[5][value][0]=="TOTEM LATHE"||room[5][value][0]=="PUNCH DESIGNIX"||room[5][value][0]=="ALCHEMITER"||room[5][value][0]=="INSTANT ALCHEMITER")
@@ -103,7 +103,6 @@ exports.run = (client, message, args) => {
 }
 
 //add target item to Sylladex
-
   currentInv.unshift(targetItem);
   let mess = `CAPTCHALOGUED the ${targetItem[0]} from the ${room[2]}.`
   if(currentInv.length > client.charcall.charData(client,charid,"cards")){
@@ -116,6 +115,14 @@ client.landMap.set(land,sec,local[0]);
 client.charcall.setAnyData(client,userid,charid,currentInv,"sdex");
 client.funcall.actionCheck(client,message,"item");
 client.funcall.tick(client,message);
+
+//Display room after being altered.
+client.landcall.displayRoom(client,message);
+
+//Display sylladex again.
+client.charcall.displaySylladex(client,message,1);
+client.funcall.roomMsg(client,message,`**${client.charcall.charData(client,charid,"name").toUpperCase()}** has captchalogued **${targetItem[0]}** [x${targetItem[3]}] from the room.`);
+
 client.tutorcall.progressCheck(client,message,5,["text",mess]);
 if(args[0]&&args[1]){
 client.tutorcall.progressCheck(client,message,13);

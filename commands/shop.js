@@ -33,8 +33,8 @@ for(let i=0;i<room[4].length;i++){
 }
   message.channel.send({files: files});
 }
-
-if(area[0]==4){
+let isShop = (area[0]==4||area[0]==26||area[0]==27||area[0]==28||area[0]==29||area[0]==30||area[0]==31||area[0]==32);
+if(isShop){
   let hasShopkeeper = false;
   let shopkeepId = ``;
   for(let i=0;i<room[4].length;i++){

@@ -100,6 +100,8 @@ const npcMap = new Enmap({
 // a > A > 1
 //list of all aspects for use all over the place.
 client.aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","VOID","SPACE","MIND","HOPE","DOOM"];
+//list of all classes for use all over the place.
+client.classes = ["HEIR","SEER","KNIGHT","WITCH","MAID","ROGUE","PRINCE","PAGE","SYLPH","THIEF","BARD","MAGE","GENT","SAGE","LORD","MUSE"];
 //action list for reference by alchemy.
 client.action=["no action","no action","no action","no action","accede","accelerate","accessorize","acclaim","acclimate","accomplish","account","accumulate","accuse","acerbate","acknowledge","acquaint","acquire","actualize","actuate","activate","acupressure","arbitrate","arborize","archive","ardor","arf","argufy","arise","arithmetize","armamentify","arraign",
   "arrange","arrest","arrive","arrogate","arsenalize","articulate","artillerate","asphixiate","aspire","ass","assail","assassinate","assault","assemble","assert","assess","asseverate","assign","assimilate","assist","assure","astonish","astound","astrict","arsonate","accomodate","abuse","abjure","abstain","absorb","abolish","abstract","abate"]

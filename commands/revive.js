@@ -3,10 +3,7 @@ exports.desc = "Revive a dead player";
 exports.use = `">revive" brings a dead character in the same room as you back to life, if they meet the right conditions.`;
 exports.run = (client, message, args) => {
 
-if(client.configcall.get(client, message, "death")==0){
-  message.channel.send("current game config doesn't allow for reviving!");
-  return;
-}
+
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
   let local = client.charcall.charData(client,charid,"local");
@@ -16,6 +13,11 @@ if(client.configcall.get(client, message, "death")==0){
   let area = sec[local[1]][local[2]];
   let channelCheck = [];
   let revcheck = false;
+
+  if(client.configcall.get(client, message, "death")==0&&(client.charcall.allData(client,userid,charid,"godtier")==false||client.charcall.allData(client,userid,charid,"godtier")=="NONE")){
+	message.channel.send("current game config doesn't allow for reviving!");
+	return;
+  }
 
   if(client.funcall.dmcheck(client,message)&&client.configcall.get(client, message, "IMMORTAL")==1){
     if(!args[0]&&!message.mentions.members.first()){
@@ -125,7 +127,7 @@ for(let i=0;i<occList.length;i++){
     	let landID = client.sburbMap.get(client.charcall.allData(client,userid,charid,"owner"), "landID");
     	aspectIndex = aspectList.indexOf(client.landMap.get(landID, "aspect"));
     }
-    client.charcall.setAnyData(client,userid,charid,[[`GODTIER PAJAMAS`,`s!${quickKey[0][aspectIndex]}${quickKey[1][aspectIndex]}0000`,1,1,[]]],"armor")
+    client.charcall.setAnyData(client,userid,charid,[[`GODTIER PAJAMAS`,`s!${quickKey[0][aspectIndex]}${quickKey[1][aspectIndex]}0000`,12,1,[]]],"armor")
     client.charcall.setAnyData(client,userid,charid,true,"alive");
     client.charcall.setAnyData(client,userid,charid,client.charcall.allData(client,userid,charid,"gel"),"vit");
     let sburbidArray = client.landMap.get(message.guild.id+"medium","playerList");

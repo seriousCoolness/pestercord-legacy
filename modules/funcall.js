@@ -274,7 +274,7 @@ for(let j=0;j<quantity;j++){
 } else {
   for(let j=0;j<quantity;j++){
     do{
-      item = lootcall.lootGen(client,room);
+      item = lootcall.lootGen(client,room+1);
     } while(itemList.includes(item[0]));
       list.push(item);
       itemList.push(item[0]);
@@ -760,7 +760,25 @@ exports.chanMsg = function(client, target, msg, embed){
       }
       }
     }
-  }
+}
+
+exports.roomMsg = function(client, message, chatMsg) {
+	
+	var userid = message.guild.id.concat(message.author.id);
+    var charid = client.userMap.get(userid,"possess");
+	
+	let occ = client.landcall.currentRoom(client,message)[4];
+	for(let i=0;i<occ.length;i++) {
+		try{
+			if(occ[i][1]!=charid)
+				client.funcall.chanMsg(client,occ[i][1],chatMsg);
+		}catch(err){
+			console.log(err);
+		}
+	}
+	
+	return;
+}
 /*try{
 
   let charid;
@@ -833,13 +851,15 @@ exports.sleepHeal = function(client,charid){
   }
 
 
-exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTitle="moving to"){
+exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTitle="moving to",displayMessage=true){
 
   let targSec = client.landMap.get(target[4],target[0]);
   var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
   var userid = message.guild.id.concat(message.author.id);
+  let sessionID = local[4].substring(0,19);
+  
   if(local[0]==target[0]&&local[4]==target[4]){
-
+	
     targSec[local[1]][local[2]][2][local[3]][4].splice(targSec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
 
   } else {
@@ -854,27 +874,46 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
 
     targSec[target[1]][target[2]][2][target[3]][4].push(occset);
 //the &&false is to disable prospitians spawning for the tournament
-    if(target[4]==message.guild.id+"medium"&&targSec[target[1]][target[2]][2][target[3]][4].length==1){
+    let roomName = targSec[target[1]][target[2]][2][0][2];
+	let isShop = (roomName=="GENERAL STORE"||roomName=="RESTAURANT"||roomName=="JEWELER"||roomName=="TAILOR"||roomName=="ARMORY"||roomName=="BUTCHER"||roomName=="CANDY SHOP"||roomName=="RESTAURANT");
+
+    if(target[4]==sessionID+"medium"&&targSec[target[1]][target[2]][2][target[3]][4].length==1){
       switch(target[0]){
         case "dm":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id))
-        break;
+          if(isShop)
+            targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,sessionID,true));
+          else
+            targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,sessionID,false));
+		break;
         case "d":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id))
-        break;
+          if(isShop)
+            targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,sessionID,true));
+          else
+            targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,sessionID,false));
+		break;
+		case "dc":
+		  if(roomName=="THRONE ROOM")
+		    targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.jackSpawn(client,target,sessionID));
+		break;
         case "pm":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,message.guild.id))
-        break;
+          if(isShop)
+            targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,sessionID,true));
+          else
+            targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,sessionID,false));
+		break;
         case "p":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,message.guild.id))
-        break;
+		  if(isShop)
+            targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,sessionID,true));
+          else
+            targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,sessionID,false));
+		break;
         case "bf":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id),client.landcall.carSpawn(client,target,1,message.guild.id));
+          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,sessionID,false),client.landcall.carSpawn(client,target,1,sessionID,false));
         break;
       }
-    }else if(target[4]!=message.guild.id+"medium"){
+    }else if(target[4]!=sessionID+"medium"){
       if(targSec[target[1]][target[2]][2][target[3]][4].length==1){
-    targSec =  client.strifecall.underSpawn(client,target,targSec,message.guild.id);
+    targSec =  client.strifecall.underSpawn(client,target,targSec,sessionID);
   }
   }
 //for now, NPCs won't reveal new tiles.
@@ -886,6 +925,13 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
   client.funcall.tick(client,message);
   client.charcall.setAnyData(client,userid,charid,target,"local");
   client.landMap.set(target[4],targSec,target[0]);
+  
+  //move followers too
+  let followers = client.charcall.charData(client,charid,"followers");
+  for(let i=0;i<followers.length;i++) {
+	let followerLocal = client.charcall.charData(client,followers[i],"local");
+	client.funcall.move(client,message,followers[i],followerLocal,target,mapCheck,msg,"following to",false);
+  }
 
   let occNew = targSec[target[1]][target[2]][2][target[3]][4];
   let location = targSec[target[1]][target[2]][2][target[3]][2];
@@ -974,6 +1020,8 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
       console.log(err);
     }
   }
+  
+  if(displayMessage)
   moveEmbed();
   setTimeout(function(){
     client.tutorcall.progressCheck(client,message,8);
@@ -992,4 +1040,21 @@ function dreamCheck(client,target,local){
 }
 exports.dreamCheck =  function(client,target,local){
   return dreamCheck(client,target,local);
+}
+
+exports.checkCharacter = function(client,message,targId) {
+	let userid = message.guild.id.concat(message.author.id);
+	
+	listPrint = new client.MessageEmbed()
+    .setTitle(`**CHECKING ${client.charcall.charData(client,targId,"name").toUpperCase()}**`)
+    .addFields(
+    {name:`**NAME**`,value:`**${client.charcall.charData(client,targId,"name").toUpperCase()}**`,inline:true},
+    {name:`**TYPE**`,value:`**${client.charcall.charData(client,targId,"type").toUpperCase()}**`,inline:true},
+    {name:`**FACTION**`,value:`**${client.charcall.charData(client,targId,"faction").toUpperCase()}**`,inline:true},
+    {name:`**VITALITY**`,value:`${client.emojis.cache.get(client.emoji["GEL"])} ${client.charcall.charData(client,targId,"vit")} / ${client.charcall.allData(client,userid,targId,"gel")}`,inline:true},
+    {name:`**BOONDOLLARS**`,value:`${client.emojis.cache.get(client.emoji["BOONS"])} ${client.charcall.allData(client,userid,targId,"b")}`,inline:true},
+    {name:`**RUNG**`,value:`${client.charcall.allData(client,userid,targId,"rung")}`,inline:true},
+    {name:`**BIO**`,value:`${client.charcall.allData(client,userid,targId,"bio")}`})
+    .setImage(client.charcall.allData(client,userid,targId,"img"));
+    client.tutorcall.progressCheck(client,message,16,["embed",listPrint]);
 }

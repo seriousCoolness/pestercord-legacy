@@ -79,7 +79,7 @@ return;
 if(strifeCheck){
   msg2 = `${client.charcall.charData(client,list[init[turn][0]][1],"name")} consumes a ${sdex[selectDex][0]}!`;
 }
-  if(client.traitcall.itemTrait(client,sdex[selectDex],"CANDY")){
+  if(strifeCheck && client.traitcall.itemTrait(client,sdex[selectDex],"CANDY")){
     let stamina = list[pos][5];
     stamina+=tier;
     list[pos][5]=stamina;
@@ -88,7 +88,7 @@ if(strifeCheck){
 
   }
 
-  if(client.traitcall.itemTrait(client,sdex[selectDex],"MEAT")){
+  if(strifeCheck && client.traitcall.itemTrait(client,sdex[selectDex],"MEAT")){
     list[pos][7].push(`MEAT${tier}`);
     msg += `\nYou will do +${tier} BD on your next attack!`;
     msg2 += `\nThey will do +${tier} BD on their next attack!`;

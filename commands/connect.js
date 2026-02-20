@@ -5,7 +5,9 @@ exports.type = "sburb";
 exports.desc = "Connect as a player's server";
 exports.use = `">connect" will list your client code, and if you have any current server or client.
 ">connect [client code]" sets you as someone's server player, and them as your client.
-">connect break" removes yourself from being both a client or a server.`;
+">connect break" on its own removes yourself from being both a client or a server.
+">connect break [client/server]" will break only the specified connection.
+">connect auto" will allow you to automatically connect each player to the next, but requires DM permissions. You can also add a list of pings to manually create a chain.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
@@ -58,7 +60,7 @@ exports.run = (client, message, args) => {
       msg+=`You have a server, ${client.sburbMap.get(target,"name")}.\n`;
     }
   }
-  msg+=`You can now do ${client.auth.prefix}connect break to reset your server and client.`;
+  msg+=`You can now do ${client.auth.prefix}connect break to reset your server and client, or specify one or the other.`;
     client.tutorcall.progressCheck(client,message,18,["text",msg]);
     return;
   }
@@ -71,6 +73,7 @@ exports.run = (client, message, args) => {
         return;
       }
     }
+	if(!args[1]) {
     if(client.charcall.allData(client,userid,charid,"client")!="NA"){
       target = client.charcall.charGet(client,client.charcall.allData(client,userid,charid,"client"));
       client.charcall.setAnyData(client,userid,target,"NA","server");
@@ -86,8 +89,80 @@ exports.run = (client, message, args) => {
     }
     message.channel.send("All connections severed!");
     return;
+	}
+	if(args[1]=="server") {
+		if(clientcode!="NONE"&&client.charcall.allData(client,userid,charid,"server")!="NA"){
+			target = client.charcall.charGet(client,client.charcall.allData(client,userid,charid,"server"));
+			client.charcall.setAnyData(client,userid,target,"NA","client");
+			client.funcall.chanMsg(client,target,`${client.charcall.charData(client,charid,"name")} has broken their connection, they are no longer your CLIENT!`);
+			client.charcall.setAnyData(client,userid,charid,"NA","server");
+			message.channel.send("Server connection severed!");
+		}
+		return;
+	}
+	if(args[1]=="client") {
+		if(client.charcall.allData(client,userid,charid,"client")!="NA"){
+			target = client.charcall.charGet(client,client.charcall.allData(client,userid,charid,"client"));
+			client.charcall.setAnyData(client,userid,target,"NA","server");
+			client.funcall.chanMsg(client,target,`${client.charcall.charData(client,charid,"name")} has broken their connection, they are no longer your SERVER!`);
+			client.charcall.setAnyData(client,userid,charid,"NA","client");
+			message.channel.send("Client connection severed!");
+		}
+		return;
+	}
   }
   clientList = client.landMap.get(`${message.guild.id}medium`,`playerList`);
+  
+  if(args[0]=="auto"){
+	if(!client.funcall.dmcheck(client,message)){
+      message.channel.send("Only a DM can use auto-connect! Make sure to give yourself a role named \"DM\" if you're in charge!");
+      return;
+	}
+	
+	if(clientList.length==1 && client.configcall.get(client, message, "SELFCONNECT")==1) {
+		message.channel.send("Self-connection is disabled, so you need more than one player before you can run this command!");
+		return;
+	}
+	//check for pings
+	if(args[1] && !message.mentions.members.first()) {
+		message.channel.send("You must provide a list of player pings.");
+		return;
+	} else if(args[1] && message.mentions.members.first()) {
+		clientList = [];
+		
+		for(const key of message.mentions.members.keys()) {
+			console.log(key);
+			clientList.push(message.guild.id.concat(key));
+		}
+	}
+	
+	
+	//connect the first with the last
+	let lastCharId = client.charcall.charGet(client,clientList[clientList.length-1]);
+	let firstCharId = client.charcall.charGet(client,clientList[0]);
+	client.charcall.setAnyData(client,userid,firstCharId,`${clientList[clientList.length-1]}`,"server");
+	client.charcall.setAnyData(client,userid,lastCharId,`${clientList[0]}`,"client");
+	message.channel.send(`Connected ${client.charcall.allData(client,userid,lastCharId,"name")} as ${client.charcall.allData(client,userid,firstCharId,"name")}s server!`);
+	
+	if(clientList.length==1) {
+		message.channel.send("Autoconnect complete!");
+		return;
+	}
+	
+	//connect each player to the next in the list
+	let i = 0;
+	for(i=0;i < clientList.length-1;i++){
+		let currentCharId = client.charcall.charGet(client,clientList[i]);
+		let nextCharId = client.charcall.charGet(client,clientList[i+1]);
+		
+		client.charcall.setAnyData(client,userid,currentCharId,`${clientList[i+1]}`,"client");
+		client.charcall.setAnyData(client,userid,nextCharId,`${clientList[i]}`,"server");
+		message.channel.send(`Connected ${client.charcall.allData(client,userid,currentCharId,"name")} as ${client.charcall.allData(client,userid,nextCharId,"name")}s server!`);
+	}
+	message.channel.send("Autoconnect complete!");
+	return;
+  }
+  
   if(clientList.indexOf(args[0])==-1){
     message.channel.send("That player is not registered!");
     return;

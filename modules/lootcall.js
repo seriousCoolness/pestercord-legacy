@@ -25,9 +25,9 @@ const tables = {
   shed:[1,2,6,8,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,32,33,34,35,36,37,38,39,40,41,42,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107],
   weapon:[56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107],
   artifact:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55],
-  simpleloot:[108,109,110,112,114,115,116,117,118,119],
-  allloot:[108,109,110,111,112,113,114,115,116,117,118,119],
-  rareloot:[111,113,114,115,116,117,118,119]
+  simpleloot:[108,109,110,111,112,113,114,115,116,117,118,119],
+  allloot:[108,109,110,111,111,112,113,113,114,115,116,117,118,119],
+  rareloot:[111,113,114,115,118,119]
 }
 const randomChar = {
   allRandom: ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
@@ -100,12 +100,19 @@ return [nameList[select],code,1,1,[]];
 
 exports.lootGen = function(client,level){
 
-  tierVary = [1,3,6,9,12];
-  quantityMin = [5,25,125,625,3125];
-  quantityMax = [10,50,250,1250,6250];
+  if(level>5){
+	  level=5;
+  }
+
+  tierVary = [1,3,6,9,12,15];
+  quantityMin = [5,25,125,625,3125,10250];
+  quantityMax = [10,125,625,3125,10250,20000];
 
 let loot;
 switch(level){
+case 5: 
+  loot = tables.rareloot;
+  break;
 case 4:
   loot = tables.rareloot;
   break;
@@ -123,18 +130,21 @@ let quantity = 1;
 let tier = 1;
 
 let code="";
+let imageLink;
 let actpos;
 switch(name){
   case "ALCHEMY ITEM - ITEMKIND":
   roll = randomChar.allRandom[Math.floor(Math.random()*randomChar.allRandom.length)]
     name = `ALCHEMY ITEM - ${client.kind[client.codeCypher[0][client.captchaCode.indexOf(roll)]].toUpperCase()}`
   code = `${roll}///////`;
+  imageLink="https://file.garden/Z_W1uUldwUL6rf2p/construct.png";
   break;
 
   case "ALCHEMY ITEM - GRIST":
       roll = randomChar.allRandom[Math.floor(Math.random()*randomChar.allRandom.length)];
       code = `/${roll}//////`;
-      name = `ALCHEMY ITEM - ${client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(roll)]].toUpperCase()}`
+      name = `ALCHEMY ITEM - ${client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(roll)]].toUpperCase()}`;
+	  imageLink="https://file.garden/Z_W1uUldwUL6rf2p/construct.png";
   break;
 
   case "ALCHEMY ITEM - ACTION":
@@ -144,7 +154,8 @@ switch(name){
         (i!=actpos?code+="/":code += roll);
       }
 
-      name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`
+      name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`;
+	  imageLink="https://file.garden/Z_W1uUldwUL6rf2p/construct.png";
   break;
 
   case "ALCHEMY ITEM - RARE ACTION":
@@ -154,8 +165,8 @@ switch(name){
         (i!=actpos?code+="/":code += roll);
       }
 
-      name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`
-
+      name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`;
+	  imageLink="https://file.garden/Z_W1uUldwUL6rf2p/construct.png";
   break;
 
   case "ALCHEMY ITEM - TRAIT":
@@ -172,7 +183,8 @@ switch(name){
       code+=roll2
       name = `ALCHEMY ITEM - ${client.traitList2[client.captchaCode.indexOf(roll2)].toUpperCase()}`
     }
-    code+="////"
+    code+="////";
+	imageLink="https://file.garden/Z_W1uUldwUL6rf2p/construct.png";
   break;
 
   case "ALCHEMY ITEM - RARE TRAIT":
@@ -190,7 +202,8 @@ switch(name){
       code+=roll2
       name = `ALCHEMY ITEM - ${client.traitList2[client.captchaCode.indexOf(roll2)].toUpperCase()}`
     }
-    code+="////"
+    code+="////";
+	imageLink="https://file.garden/Z_W1uUldwUL6rf2p/construct.png";
   break;
   case "RANDOM WEAPON":
 
@@ -242,37 +255,53 @@ switch(name){
   case "STRIFE CARD":
   code="////////"
   quantity = level+1;
+  imageLink="https://file.garden/Z_W1uUldwUL6rf2p/strife_card.png";
   break;
 
   case "STRIFE SPECIBUS":
   code="////////"
   quantity = Math.ceil(level+1/2);
+  imageLink="https://file.garden/Z_W1uUldwUL6rf2p/Specibus.png";
   break;
 
   case "BOONDOLLARS":
   code="////////"
   quantity = Math.ceil(Math.random()*(quantityMax[level]-quantityMin[level]))+quantityMin[level];
+  imageLink="https://file.garden/Z_W1uUldwUL6rf2p/boondollars.png";
   break;
 
   case "RAINBOW GRIST":
   code="////////"
   quantity = Math.ceil(Math.random()*(quantityMax[level]-quantityMin[level]))+quantityMin[level];
+  imageLink="https://file.garden/Z_W1uUldwUL6rf2p/RAINBOW.png";
   break;
 
 }
 
+if(imageLink==undefined)
   return [name,code,tier,quantity,[]];
-
+else
+  return [name,code,tier,quantity,[],imageLink];
 }
 
 exports.lootA = function(client,section){
 
-  return ["BOSS CHEST","y!3IXhgi",1,1,[client.lootcall.lootGen(client,section+1),client.lootcall.lootGen(client,section+1),client.lootcall.lootGen(client,section+1)]];
+  return ["BOSS CHEST","y!3IXhgi",1,1,client.lootcall.lootList(client,section+2)];
 
 }
 
 exports.lootB = function(client,section){
-  return ["CHEST","y03wX2Ze",1,1,[client.lootcall.lootGen(client,section),client.lootcall.lootGen(client,section)]];
+  return ["CHEST","y03wX2Ze",1,1,client.lootcall.lootList(client,section+1)];
+}
+
+exports.lootList = function(client,section){
+	list=[];
+	
+	for(i=0;i<(Math.random()*7)+1;i++) {
+		list.push(client.lootcall.lootGen(client,section));
+	}
+	
+	return list;
 }
 /*
 exports.lootA = function(client, section, loot) {

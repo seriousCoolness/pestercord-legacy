@@ -7,7 +7,7 @@ exports.run = function(client, message, args) {
   var charid = client.userMap.get(userid,"possess");
 
 
-  if(client.charcall.allData(client,userid,charid,"revived")){
+  if(client.charcall.allData(client,userid,charid,"revived")||client.charcall.allData(client,userid,charid,"godtier")){
     if(client.charcall.allData(client,userid,charid,"revived")=="NONE"){
       message.channel.send("It doesn't seem like you can sleep!");
       return;

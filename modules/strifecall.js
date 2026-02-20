@@ -3,9 +3,10 @@ const log = true;
 const tierDmg = [1,5,7,10,14,19,25,32,40,49,59,70,82,95,109,124,140];
 const tierBD = [[1,2],[1,4],[1,6],[1,8],[1,10],[1,12],[2,16],[2,20],[2,24],[3,30],[3,36],[4,40],[5,50],[6,60],[7,70],[8,80],[10,100]];
 const tierAv = [1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+const tierChance = [12,12,12,12,10,10,10,10,8,8,8,8,6,6,6,4];
 
                   // 0                 //5                //10                //15                //20                //25                //30                //35                //40                //45                //50                //55                     //60                     //65                     //70                     //75                     //80                     //85                      //90                          //95                         //100
-const rungGrist = [ 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 88, 96,104,112,120,128,136,144,152,160,176,192,208,224,240,256,272,288,304,320,352,384,416,448,480,512,544,576,608,640,704,768,832,896,960,1024,1088,1152,1216,1280,1408,1536,1664,1792,1920,2048,2176,2304,2432,2560,2816,3072,3328,3584,3840,4096,4352,4608,4864,5120,5632,6144,6656,7168,7680,8192,8704,9216,9728,10240,11264,12288,13312,14336,15360,16384,17408,18432,19456,20480];
+const rungGrist = [ 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 88, 96,104,112,120,128,136,144,152,160,176,192,208,224,240,256,272,288,304,320,352,384,416,448,480,512,544,576,608,640,704,768,832,896,960,1024,1088,1152,1216,1280,1408,1536,1664,1792,1920,2048,2176,2304,2432,2560,2816,3072,3328,3584,3840,4096,4352,4608,4864,5120,5632,6144,6656,7168,7680,8192,8704,9216,9728,10240,11264,12288,13312,14336,15360,16384,17408,18432,19456,40480];
 const rungReq   = [  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 34, 38, 42, 46, 50, 54, 58, 62, 66, 70, 78, 86, 94,102,110,118,126,134,142,150,166,182,198,214,230,246,262,278,294,310,342,374,406,438,470, 502, 534, 566, 598, 630, 694, 758, 822, 886, 950,1014,1078,1142,1206,1270,1398,1526,1654,1782,1910,2038,2166,2294,2422,2550,2806,3062,3318,3574,3830,4086,4342,4598,4854, 5110, 5622, 6134, 6646, 7158, 7670, 8182, 8694, 9206, 9718,10230,9999999999999999];
 const rungGel   = [100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500, 510, 520, 530, 540, 550, 565, 580, 595, 610, 625, 640, 655, 670, 685, 700, 715, 730, 745, 760, 775, 790, 805, 820, 835, 850, 865, 880, 895, 910, 925, 940, 955, 970, 985, 1000, 1020, 1040, 1060, 1080, 1100, 1120, 1140, 1160, 1180, 1200, 1220, 1240, 1260, 1280, 1300]; // Additional values added to support PLUSH trait
 const rungBoon  = [  0, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,160,160,160,160,160,160,160,160,160,160,320,320,320,320,320, 320, 320, 320, 320, 320, 640, 640, 640, 640, 640, 640, 640, 640, 640, 640,1280,1280,1280,1280,1280,1280,1280,1280,1280,1280,2560,2560,2560,2560,2560,2560,2560,2560,2560, 2560, 5120, 5120, 5120, 5120, 5120, 5120, 5120, 5120, 5120, 5120]
@@ -34,9 +35,22 @@ const PROFILE = {
     STATUS: 7
 }
 
+function getTierChance(client,charid,defaultchance) {
+	let spec = client.charcall.charData(client,charid,"spec");
+	let equip = client.charcall.charData(client,charid,"equip");
+	
+	if(spec.length>0&&spec[equip]!=undefined) {
+		//get the tier of the weapon to determine status chance die
+		return tierChance[spec[equip][2]];
+	} else {
+		return defaultchance;
+	}
+}
+
 function inflict(client, message, local, list, target, chance, status, attacker){
   //quickjump
     let alert = ``;
+	
   if(!list[target][7].includes(status)){
     if(!Math.floor((Math.random() * chance))){
 
@@ -171,7 +185,9 @@ try{
   client.charcall.setAnyData(client,userid,list[target][1],false,"alive");
   //if the character dying is a player, give kill credit.
   if(client.charcall.charData(client,list[target][1],"type")=="player"){
-
+    if(client.configcall.get(client, message, "DEATH")==0) {
+		client.charcall.setAnyData(client,userid,list[target][1],true,"alive");
+    }
   charid = client.userMap.get(userid,"possess");
   //as long as the killer has a character that tracks player kills, they get the credit.
   if(client.charcall.allData(client,userid,charid,"playersDefeated")!="NONE"){
@@ -312,46 +328,68 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
       let godtier = client.charcall.allData(client,userid,charid,`godtier`);
       //if an npc can collect grist but can't godtier, this will avoid crashes.
       if(godtier=="NONE") godtier = false;
+	  
+	  //awards xp BEFORE message, so that grist cap can be applied.
+	  if(!godtier&&client.charcall.allData(client,userid,charid,"xp")!="NONE"){
+        giveXp(client,charid,xp);
+		rung = client.charcall.allData(client,userid,charid,"rung");
+      }
 
       if((repgrist == "build") != (repGristIndex == 0)){
         console.log(`Something went wrong! repgrist is ${repgrist}, but the index is ${repGristIndex}!`);
       }
-
-      if(!godtier&&grist[repGristIndex]+Math.ceil(amount*4)>rungGrist[rung]){
-        grist[repGristIndex]=rungGrist[rung];
-      } else {
-        grist[repGristIndex]+=Math.ceil(amount*4);
-      }
-
-      if(!godtier&&grist[client.grist[primaryType].pos]+Math.ceil(amount*2)>rungGrist[rung]){
-        grist[client.grist[primaryType].pos]=rungGrist[rung];
-      } else {
-        grist[client.grist[primaryType].pos]+=Math.ceil(amount*2);
-      }
+	  if(godtier||grist[repGristIndex]<=rungGrist[rung]){
+		  if(grist[repGristIndex]+Math.ceil(amount*4)>rungGrist[rung]){
+			if(!godtier)
+				grist[repGristIndex]=rungGrist[rung];
+			else
+				grist[repGristIndex]+=Math.ceil(amount*4);
+		  } else {
+			grist[repGristIndex]+=Math.ceil(amount*4);
+		  }
+	  }
+	  if (godtier||grist[client.grist[primaryType].pos]<=rungGrist[rung]){
+		  if(grist[client.grist[primaryType].pos]+Math.ceil(amount*2)>rungGrist[rung]){
+			if(!godtier)	
+				grist[client.grist[primaryType].pos]=rungGrist[rung];
+			else
+				grist[client.grist[primaryType].pos]+=Math.ceil(amount*2);
+		  } else {
+			grist[client.grist[primaryType].pos]+=Math.ceil(amount*2);
+		  }
+	  }
       //if rainbow grist, add to all grist types
       if(secondType=="rainbow"){
         let j;
         for(j=1;j<13;j++){
-          if(!godtier&&grist[j]+Math.ceil(amount)>rungGrist[rung]){
-            grist[j]=rungGrist[rung];
-          } else {
-            grist[j]+=Math.ceil(amount);
-          }
+		  if(godtier||grist[j]<=rungGrist[rung]) {
+			  if(grist[j]+Math.ceil(amount)>rungGrist[rung]){
+				if(!godtier)
+					grist[j]=rungGrist[rung];
+				else
+					grist[j]+=Math.ceil(amount);
+			  } else {
+				grist[j]+=Math.ceil(amount);
+			  }
+		  }
         }
 
       } else {
-        if(!godtier&&grist[client.grist[secondType].pos]+Math.ceil(amount)>rungGrist[rung]){
-          grist[client.grist[secondType].pos]=rungGrist[rung];
-        } else {
+        if(godtier||grist[client.grist[secondType].pos]+Math.ceil(amount)>rungGrist[rung]&&grist[client.grist[secondType].pos]<=rungGrist[rung]){
+          if(!godtier)
+			grist[client.grist[secondType].pos]=rungGrist[rung];
+		  else
+			grist[client.grist[secondType].pos]+=Math.ceil(amount);
+		} else {
           grist[client.grist[secondType].pos]+=Math.ceil(amount);
         }
       }
       rewardMsg+=`**${client.emojis.cache.get(client.grist[repgrist].emoji)} ${Math.ceil(amount*4)}, ${client.emojis.cache.get(client.grist[primaryType].emoji)} ${Math.ceil(amount*2)}, ${client.emojis.cache.get(client.grist[secondType].emoji)} ${Math.ceil(amount)}** and `;
       client.charcall.setAnyData(client,userid,charid,grist,"grist");
-
+	
+	//now send XP message without giving duplicate xp drops
     if(!godtier&&client.charcall.allData(client,userid,charid,"xp")!="NONE"){
       client.funcall.chanMsg(client,charid,`${rewardMsg}**${xp} XP**`);
-      giveXp(client,charid,xp);
     } else {
       client.funcall.chanMsg(client,charid,`${rewardMsg}**0 XP**`);
     }
@@ -501,8 +539,8 @@ return;
       client.charcall.setAnyData(client,userid,charid,[],"control");
       return;
     }
-    //switches the dreaming and waking self, and all those who control them.
-    if(client.configcall.get(client, message, "death")==0){
+    //switches the dreaming and waking self, and all those who control them, and makes sure that you haven't godtiered.
+    if(client.configcall.get(client, message, "death")==0&&(client.charcall.allData(client,userid,charid,"godtier")==false||client.charcall.allData(client,userid,charid,"godtier")=="NONE")){
       if(client.charcall.allData(client,userid,charid,"dreamer")){
         target = client.charcall.allData(client,userid,charid,"wakingID");
       } else {
@@ -520,7 +558,7 @@ return;
     }
     client.charcall.setAnyData(client,userid,charid,[],"control");
     client.charcall.setAnyData(client,userid,target,targList,"control");
-  client.funcall.chanMsg(client,target,`You've been knocked out! You are currently awake as ${(client.charcall.allData(client,userid,charid,"dreamer")?`your dream self`:`your waking self`)}, and your other body is at ${client.charcall.charData(client,charid,"vit")} VIT. perform various actions as your current self to heal, and >sleep when your body is healed again!`);
+  client.funcall.chanMsg(client,target,`You've been knocked out! You are currently awake as ${(client.charcall.allData(client,userid,charid,"dreamer")?`your *dream self*`:`your *waking self*`)}, and your other body is at *${client.charcall.charData(client,charid,"vit")} VIT*. perform various actions as your current self to heal, and >sleep when your body is healed again!`);
 } else {
   let godtier = client.charcall.allData(client,userid,charid,"godtier");
   if(godtier=="NONE") godtier = false;
@@ -777,20 +815,20 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
     }
 
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CANDY")[1]){
-      stamina+=1;
-      stamsg += ` + 1`;
+      stamina+=denom;
+      stamsg += ` + ${denom}`;
     }
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BUSINESS")[1]){
-      stamina+=1;
-      stamsg += ` + 1`;
+      stamina+=denom;
+      stamsg += ` + ${denom}`;
     }
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"WELSH")[0]){
-      stamina+=1;
-      stamsg += ` + 1`;
+      stamina+=denom;
+      stamsg += ` + ${denom}`;
     }
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[0]){
-      stamina+=1;
-      stamsg += ` + 1`;
+      stamina+=denom;
+      stamsg += ` + ${denom}`;
     }
 
     if(list[init[turn][0]][7].includes("FROSTBITE")){
@@ -825,6 +863,293 @@ if(ping!="NONE"){
 }
 
   turnMsg+=`it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\nSee the list of actions you can take with ${client.auth.prefix}act, and ${client.auth.prefix}pass your turn once you're done!${alert}`;
+
+let charid = client.userMap.get(userid,"possess");
+let pos = client.charcall.charData(client,charid,"pos");
+
+if(list[init[turn][0]][1]==charid){
+
+//
+// DISPLAY ACTIONS
+//
+
+	let action = [];
+
+	let pos = client.charcall.charData(client,list[init[turn][0]][1],"pos");
+	let spec = client.charcall.charData(client,list[init[turn][0]][1],"spec");
+	let equip = client.charcall.charData(client,list[init[turn][0]][1],"equip");
+	
+	//as long as the character has a weapon equipped, it overrides the default damage.
+	if(spec.length>0){
+		try{
+			damage=tierDmg[spec[equip][2]];
+		} catch(err) {
+			damage=1;
+			message.channel.send("CORRUPTION DETECTED! Somethings wrong with your weapon!");
+			return; 
+		}
+	}
+	else {
+			damage=1;
+	}
+
+	  
+	  //as long as the equipped weapon exists, all actions are added to the character's action pool.
+	  if(equip<spec.length){
+		action =[client.action[client.codeCypher[4][client.captchaCode.indexOf(spec[equip][1].charAt(4))]],client.action[client.codeCypher[5][client.captchaCode.indexOf(spec[equip][1].charAt(5))]],client.action[client.codeCypher[6][client.captchaCode.indexOf(spec[equip][1].charAt(6))]],client.action[client.codeCypher[7][client.captchaCode.indexOf(spec[equip][1].charAt(7))]]];
+	  }
+	  //adds default actions based on character type.
+	  action=action.concat(client.underlings[type].act);
+
+	  //checks if the character has a prototyping, or several, attached.
+	  if(client.charcall.hasData(client,charid,"prototype")){
+		let prototype = client.charcall.charData(client,charid,"prototype");
+		//adds every action given by prototypes
+		for(let j =0;j<prototype.length;j++){
+		  for(let i=0;i<4;i++){
+			action.push(client.action[client.codeCypher[i+4][client.captchaCode.indexOf(prototype[j][1].charAt(i+4))]]);
+
+		  }
+		}
+	  }
+	//both applyText functions make it so that both the name and information text
+		//fit within the constraints of the box.
+		function applyText(canvas, msg, width){
+		let fontsize = 20;
+		ctx.font = `bold ${fontsize}px FONTSTUCK`;
+		   while (ctx.measureText(msg).width > width){
+		ctx.font = `bold ${fontsize -= 2}px FONTSTUCK`;
+		}
+		  return ctx.font;
+		}
+		function applyText2(canvas, msg, width){
+		let fontsize = 28;
+		ctx.font = `bold ${fontsize}px Courier Standard Bold`;
+		   while (ctx.measureText(msg).width > width){
+		ctx.font = `bold ${fontsize -= 2}px Courier Standard Bold`;
+		if(fontsize<=23){
+		  return ctx.font;
+		}
+		}
+		  return ctx.font;
+		}
+		//splitText will break the text into two lines if it's beyond a certain length.
+		function splitText(msg){
+		  if(msg.length>28){
+			let i=26;
+		  var middle = Math.floor(msg.length/2);
+		  var split = msg.indexOf(' ',i);
+		  while(split==-1){
+			i--;
+			split =msg.indexOf(' ',i)
+		  }
+		  var msg1 = msg.substring(0,split);
+		  var msg2 = msg.substring(split+1);
+		  msg = msg1+'\n'+msg2;
+		  return msg;
+		} else {
+		  return msg;
+		}
+		}
+	client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`FONTSTUCK`});
+	client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
+	//the image is based on the number of actions so there will always be space.
+	const canvas = client.Canvas.createCanvas(1000,(Math.ceil(action.length/2)*130) +165);
+	const ctx = canvas.getContext('2d');
+	//-----BOXES-----
+	let d=20;
+	//stamina box
+	ctx.fillStyle = "#ffffff";
+	ctx.strokeStyle = "#000000";
+	ctx.lineWidth =5;
+	ctx.fillRect(canvas.width/4,35,canvas.width/2,40);
+	ctx.strokeRect(canvas.width/4,35,canvas.width/2,40);
+
+	//top action referecne bar
+	ctx.lineWidth =3;
+	//action number
+	ctx.fillRect(30+d,95,40,40);
+	ctx.strokeRect(30+d,95,40,40);
+
+	//action name
+	ctx.fillRect(70+d,95,210,40);
+	ctx.strokeRect(70+d,95,210,40);
+	//action cost
+	ctx.fillRect(290+d,95,60,40);
+	ctx.strokeRect(290+d,95,60,40);
+	//action damage
+	ctx.fillRect(355+d,95,115,40);
+	ctx.strokeRect(355+d,95,115,40);
+
+	//action number
+	ctx.fillRect(530-d,95,40,40);
+	ctx.strokeRect(530-d,95,40,40);
+
+	//action name
+	ctx.fillRect(570-d,95,210,40);
+	ctx.strokeRect(570-d,95,210,40);
+	//action cost
+	ctx.fillRect(790-d,95,60,40);
+	ctx.strokeRect(790-d,95,60,40);
+	//action damage
+	ctx.fillRect(855-d,95,115,40);
+	ctx.strokeRect(855-d,95,115,40);
+
+	//----TEXT-----
+	//Stamina Text
+	ctx.font = `bold 20px FONTSTUCK`;
+	ctx.fillStyle = "#000000";
+	ctx.fillText("STAMINA:",(canvas.width/4)+10,65);
+	ctx.textAlign = "center";
+	ctx.fillText(list[pos][5],(canvas.width/4)+205,65);
+
+	//top action reference text
+	ctx.font = `bold 30px Courier Standard Bold`;
+	ctx.fillText("#",50+d,125);
+	ctx.fillText("ACTION",170+d,125);
+	ctx.fillText("CST",320+d,125);
+	ctx.fillText("DMG",410+d,125);
+
+	ctx.fillText("#",550-d,125);
+	ctx.fillText("ACTION",670-d,125);
+	ctx.fillText("CST",820-d,125);
+	ctx.fillText("DMG",910-d,125);
+
+
+	for(i=0;i<action.length;i++){
+	  let lcost = client.actionList[action[i]].cst
+
+	  if(client.traitcall.traitCheck(client,charid,"LIGHTWEIGHT")[1]){
+		if(lcost > 3){
+		   lcost--;
+		}
+	  }
+
+	  if(list[pos][7].includes("DISCOUNT")){
+		if(lcost > 1){
+		   lcost--;
+		 }
+	  }
+
+	  if(client.traitcall.traitCheck(client,charid,"MIND")[1]){
+		if(lcost > 1){
+		  lcost--;
+		}
+	  }
+
+	  let m=d
+
+	  if(i%2){
+		m=500-d;
+	  }
+
+	  let j=Math.floor(i/2);
+
+	  let tempcolor;
+	  let tempbg;
+		switch(action[i].substring(0,2)){
+		  case `no`:
+		  tempcolor= `#6D6D6D`;
+		  tempbg = `#cccccc`;
+		  break;
+		  case `ac`:
+		  tempcolor=  `#6688FE`;
+		  tempbg = `#b3c3ff`;
+		  break;
+		  case `ar`:
+		  tempcolor= `#9B38F4`;
+		  tempbg = `#dbb3ff`;
+		  break;
+		  case `as`:
+		  tempcolor=  `#ff4e31`;
+		  tempbg = `#ffbdb3`;
+		  break;
+
+		  case `ab`:
+		  tempcolor=  `#ffae00`;
+		  tempbg = `#ffe7b3`;
+		  break;
+		  case 'ag':
+		  tempcolor = "#3ef443";
+		  tempbg = `#aaf2ac`;
+		  break;
+		  default:
+		  tempcolor= `#6D6D6D`;
+		  tempbg = `#cccccc`;
+	  }
+
+	  if(action[i]=="abscond"){
+		tempcolor=`#ff3779`;
+		tempbg=`#ffb3cc`;
+	  }
+
+	  if(!client.actionList[action[i]].add.includes("REUSE") && list[pos][6].includes(""+i+equip)){
+		tempcolor= `#6D6D6D`;
+		tempbg = `#cccccc`;
+	  }
+
+	  //action number
+	  //ctx.fillRect(30,145+(130*j),40,40);
+	  //ctx.strokeRect(30,146+(130*j),40,40);
+
+	  ctx.lineWidth =3;
+	  ctx.fillStyle = "#ffffff";
+	  ctx.strokeStyle = "#000000";
+	  //action cost
+	  ctx.fillRect(290+m,145+(130*j),60,40);
+	  ctx.strokeRect(290+m,145+(130*j),60,40);
+	  //action damage
+	  ctx.fillRect(355+m,145+(130*j),115,40);
+	  ctx.strokeRect(355+m,145+(130*j),115,40);
+	  //action description message
+	  ctx.fillStyle = tempbg;
+	  ctx.fillRect(30+m,195+(130*j),440,70);
+	  ctx.strokeRect(30+m,195+(130*j),440,70);
+
+	  //text
+	  ctx.font = `bold 32px Courier Standard Bold`;
+	  ctx.fillStyle = "#000000";
+	  //action name image
+
+	  ctx.fillStyle = "#ffffff";
+	  ctx.fillRect(70+m,145+(130*j),210,40);
+	  ctx.strokeStyle = tempcolor;
+	  ctx.fillStyle = tempcolor;
+	  ctx.lineWidth=6;
+	  ctx.strokeRect(72+m,146+(130*j),208,38);
+	  ctx.font = `bold 20px FONTSTUCK`;
+	  ctx.font = applyText(canvas,action[i].toUpperCase(),203);
+	  ctx.fillText(action[i].toUpperCase(),175+m,175+(130*j));
+		ctx.fillStyle = "#000000";
+		let tempAct = splitText(client.actionList[action[i]].aa);
+	  ctx.font = applyText2(canvas,tempAct,440);
+	  ctx.fillText(tempAct,250+m,225+(130*j));
+	//select number
+	  ctx.fillStyle = tempcolor;
+	  ctx.strokeStyle = tempcolor;
+	  ctx.font = `bold 20px FONTSTUCK`;
+	  //action number
+	  ctx.fillRect(30+m,145+(130*j),40,40);
+	  ctx.strokeRect(30+m,146+(130*j),40,38);
+	  ctx.fillStyle = "#ffffff";
+	  ctx.fillText(i+1,50+m,175+(130*j));
+	  //action cost
+	  ctx.fillRect(290+m,145+(130*j),60,40);
+	  ctx.strokeRect(290+m,145+(130*j),60,40);
+	  //action damage
+	  ctx.fillRect(355+m,145+(130*j),115,40);
+	  ctx.strokeRect(355+m,145+(130*j),115,40);
+	  ctx.fillStyle = tempcolor;
+	  ctx.fillText(lcost,320+m,175+(130*j));
+	  ctx.fillText(client.actionList[action[i]].dmg*damage,410+m,175+(130*j));
+	}
+
+	let attachment = new client.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
+	client.tutorcall.progressCheck(client,message,34,["img",attachment]);
+	
+	
+}
+
 //strifelist
 //send message to player's channel
   let embed = strifeList(client,local,active,list,turn,init,list[init[turn][0]][1],0,`STRIFE LIST (>list)`);
@@ -900,10 +1225,14 @@ return sec;
 switch (local[0]){
   case "h":
     if(rung < 15){
-    underlingChoice=["imp"];
-      } else {
-    underlingChoice = ["imp","ogre"];
-  }
+		underlingChoice=["imp"];
+    } else if(rung < 30) {
+		underlingChoice = ["imp","ogre"];
+    } else if(rung < 50) {
+		underlingChoice = ["imp","ogre","basilisk"];
+	} else {
+		underlingChoice = ["imp","ogre","basilisk","unicorn"];
+	}
   break;
   case "s1":
   underlingChoice = ["imp","ogre","basilisk"];
@@ -915,27 +1244,29 @@ switch (local[0]){
   underlingChoice = ["ogre","basilisk","lich"];
   break;
   case "s2d":
-  underlingChoice = ["basilisk"];
+  underlingChoice = ["basilisk","lich"];
   break;
   case "s3":
   underlingChoice = ["basilisk","lich","giclopse"];
   break;
   case "s3d":
-  underlingChoice = ["ogre","basilisk"];
+  underlingChoice = ["lich","giclopse"];
   break;
   case "s4":
   underlingChoice = ["lich","giclopse","titachnid"];
   break;
   case "s4d":
-  underlingChoice = ["ogre","basilisk"];
+  underlingChoice = ["giclopse","titachnid"];
   break;
 }
 if(rung < 5){
-spawnBank = Math.ceil(Math.random() * 2);
+  spawnBank = Math.ceil(Math.random() * 2);
 } else if( rung < 10){
   spawnBank = Math.ceil(Math.random() * 3);
+} else if( rung < 50){
+  spawnBank = Math.ceil(Math.random() * 6);
 } else {
-spawnBank = Math.ceil(Math.random() * 6);
+  spawnBank = Math.ceil(Math.random() * 8);
 }
 
 let npcCount = client.landMap.get(sessionID+"medium","npcCount");
@@ -1064,7 +1395,7 @@ exports.underRally = function(client, message, local) {
     let tarGrist;
 
     if(client.traitcall.traitCheck(client,list[target][1],"BLOOD")[0]){
-      if(!Math.floor(Math.random()*12)&&active.length>2){
+      if(!Math.floor(getTierChance(client,list[init[turn][0]][1],12))&&active.length>2){
           let bloodCheck = false;
           while(!bloodCheck){
             let newTarget = active[Math.floor(Math.random()*active.length)];
@@ -1571,16 +1902,16 @@ if(strikeBonus<0){
     //if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CANDY")[1]==true){
 
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"HOT")[0]){
-    alert+=inflict(client, message, local, list, target, 12, "BURN", init[turn][0]);
+    alert+=inflict(client, message, local, list, target, getTierChance(client,list[init[turn][0]][1],12), "BURN", init[turn][0]);
     }
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"IRRADIATED")[0]){
-    alert+=inflict(client, message, local, list, target, 12, "BURN", init[turn][0]);
+    alert+=inflict(client, message, local, list, target, getTierChance(client,list[init[turn][0]][1],12), "BURN", init[turn][0]);
     }
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"SHARP")[0]){
-    alert+=inflict(client, message, local, list, target, 12, "BLEED", init[turn][0]);
+    alert+=inflict(client, message, local, list, target, getTierChance(client,list[init[turn][0]][1],12), "BLEED", init[turn][0]);
     }
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"VAMPIRIC")[0]){
-    alert+=inflict(client, message, local, list, target, 12, "BLEED", init[turn][0]);
+    alert+=inflict(client, message, local, list, target, getTierChance(client,list[init[turn][0]][1],12), "BLEED", init[turn][0]);
     }
     if(aa.includes("BLEED8")){
     alert+=inflict(client, message, local, list, target, 8, "BLEED", init[turn][0]);
@@ -1592,49 +1923,49 @@ if(strikeBonus<0){
     alert+=inflict(client, message, local, list, target, 4, "STUN", init[turn][0]);
     }
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"COLD", init[turn][0])[0]){
-  alert+=inflict(client, message, local, list, target, 12, "FROSTBITE", init[turn][0]);
+  alert+=inflict(client, message, local, list, target, getTierChance(client,list[init[turn][0]][1],12), "FROSTBITE", init[turn][0]);
 }
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
-   alert+=inflict(client, message, local, list, target, 12, "STUN", init[turn][0]);
+   alert+=inflict(client, message, local, list, target, getTierChance(client,list[init[turn][0]][1],12), "STUN", init[turn][0]);
 }
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"RAGE")[0]){
-   alert+=inflict(client, message, local, list, target, 6, "STUN", init[turn][0]);
+   alert+=inflict(client, message, local, list, target, Math.ceil(getTierChance(client,list[init[turn][0]][1],12)+4/2), "STUN", init[turn][0]);
 }
   if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BLUNT")[0]){
     let dchance=12;
   if(!list[target][7].includes("DAZED")){
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BLUNT")[1]){
-      dchance = 6;
+      dchance = Math.ceil(getTierChance(client,list[init[turn][0]][1],12)/2);
     }
     alert+=inflict(client, message, local, list, target, dchance, "DAZED", init[turn][0]);
   }
   }
   if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"SHITTY")[1]){
-  alert+=inflict(client, message, local, list, target, 12, "CORRUPT", init[turn][0]);
+  alert+=inflict(client, message, local, list, target, getTierChance(client,list[init[turn][0]][1],12), "CORRUPT", init[turn][0]);
   }
   if(client.traitcall.traitCheck(client,list[target][1],"THORNS")[0]){
-  alert+=inflict(client, message, local, list, init[turn][0], 12, "BLEED", target);
+  alert+=inflict(client, message, local, list, init[turn][0], getTierChance(client,list[init[turn][0]][1],12), "BLEED", target);
   }
   if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"SPOOKY")[0]){
   if(!list[target][7].includes("HAUNT")&&!list[target][7].includes("HAUNT2")&&!list[target][7].includes("HAUNT3")){
-      alert+=inflict(client, message, local, list, target, 12, "HAUNT", init[turn][0]);
+      alert+=inflict(client, message, local, list, target, getTierChance(client,list[init[turn][0]][1],12), "HAUNT", init[turn][0]);
   }
   }
   if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"GRIMDARK")[0]){
   if(!list[target][7].includes("HAUNT")&&!list[target][7].includes("HAUNT2")&&!list[target][7].includes("HAUNT3")){
-    alert+=inflict(client, message, local, list, target, 12, "HAUNT", init[turn][0]);
+    alert+=inflict(client, message, local, list, target, getTierChance(client,list[init[turn][0]][1],12), "HAUNT", init[turn][0]);
   }
   }
 if(client.traitcall.traitCheck(client,list[target][1],"CAT")[0]){
   br++;
 }
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BROKEN")[1]){
-  if(!Math.floor((Math.random() * 12))){
+  if(!Math.floor(getTierChance(client,list[init[turn][0]][1],12))){
     bdmax = true;
   }
 }
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"STICKY")[0]){
-  alert+=inflict(client, message, local, list, target, 12, "GRAPPLE", init[turn][0]);
+  alert+=inflict(client, message, local, list, target, getTierChance(client,list[init[turn][0]][1],12), "GRAPPLE", init[turn][0]);
 }
   if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"STICKY")[1] && list[target][7].includes("GRAPPLE")){
     bd++;
@@ -1970,7 +2301,7 @@ if(aa.includes("RANDSTATUS")){
 
 
     if(client.traitcall.traitCheck(client,targUnit[1],"HEART")[0]){
-      if(!Math.floor(Math.random()*20)){
+      if(!Math.floor(Math.random()*(getTierChance(client,targUnit[1],12)+4))){
         targUnit[HEALTH]+= damage;
         alert+=`The pain fuels their soul, damage converted to ${damage} points of healing!\n`;
         damage=0;
@@ -2461,7 +2792,7 @@ function getBonusFromTrinket(client, message, trinket){
 	}
 	let tier = trinket[2];
 	let kind = trinket[1][0];
-	let bonus = Math.floor(Math.sqrt(tier));
+	let bonus = Math.ceil((tier+1)/3);
 	if(trinketSetting == 1){
 		return [bonus, "accuracy"];
 	}
@@ -2562,7 +2893,9 @@ exports.spawn = function(client,message,underling,pregrist = false){
       b:0,
       bio:`A ${grist} ${underling}`,
       img:client.underlings[underling].img,
-      questData:[]
+      questData:[],
+	  followers:[],
+	  following:"NONE"
     }
     //rep [prospit,derse,underling,player]
 
@@ -2820,4 +3153,77 @@ function getCharHealth(client, userid, charid){
 
 exports.getCharHealth = function(client, userid, charid){
   return getCharHealth(client, userid, charid);
+}
+
+//function to enter a character into an existing strife.
+exports.enterStrife = function(client,message,charid) {
+	
+	let userid = message.guild.id.concat(message.author.id);
+	
+	var isNPC = client.charcall.npcCheck(client,charid);
+	let local = client.charcall.charData(client,charid,"local");
+	
+	let armor = client.charcall.charData(client,charid,"armor");
+    let vit = client.charcall.charData(client,charid,"vit");
+
+    let spec =client.charcall.charData(client,charid,"spec");
+    let equip = client.charcall.charData(client,charid,"equip");
+
+
+    if(client.traitcall.traitCheck(client,charid,"PLUSH")[0]){
+		vit = client.strifecall.getCharHealth(client, userid, charid)[0];
+    }
+	
+	let grist;
+	//determine grist type for effectiveness
+	if(armor.length == 0){
+		grist = "artifact"
+    //unarmored underlings keep their grist type.
+    if(isNPC) grist = client.charcall.charData(client,charid,"gristtype");
+    } else {
+		grist = client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(armor[0][1].charAt(1))]];
+    }
+	
+	let land = local[4];
+    let sec = client.landMap.get(land,local[0]);
+    let occ = sec[local[1]][local[2]][2][local[3]][4];
+	
+	let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`
+    let profile = [(isNPC?false:true),charid,grist,vit,0,1,[],[]];
+	
+	
+	if(!client.strifeMap.has(strifeLocal)) {
+		console.log("Tried to enter non-existant strife!");
+		return;
+	}
+	
+	let list = client.strifeMap.get(strifeLocal,"list");
+    let init = client.strifeMap.get(strifeLocal,"init");
+	let active = client.strifeMap.get(strifeLocal,"active");
+	//set player position in list
+    const pos = list.length;
+	
+	list.push(profile);
+    init.push([pos,1]);
+    active.push(pos);
+
+    client.strifeMap.set(strifeLocal,list,"list");
+    client.strifeMap.set(strifeLocal,init,"init");
+    client.strifeMap.set(strifeLocal,active,"active");
+    client.charcall.setAnyData(client,userid,charid,pos,"pos");
+	client.charcall.setAnyData(client,userid,charid,true,"strife");
+    
+	if(client.charcall.controlCheck(client,charid))
+		client.funcall.actionCheck(client,message);
+    let turn = client.strifeMap.get(strifeLocal,"turn");
+    client.strifecall.strifeList(client,local,active,list,turn,init,charid,0,"ENTERING STRIFE!");
+	
+	let name = client.charcall.charData(client,charid,"name");
+
+    for(let i =0;i<active.length;i++){
+
+		if(list[active[i]][1]!=charid){
+			client.funcall.chanMsg(client,list[active[i]][1],`**${name.toUpperCase()}** has joined the STRIFE at position ${active.indexOf(pos)+1}!`);
+		}
+    }
 }

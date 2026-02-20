@@ -18,7 +18,7 @@ exports.run = async function(client, message, args){
     return;
   }
 
-  let msg=``;
+  let msg=`**${name}**: `;
 
   let i;
 
@@ -27,12 +27,7 @@ exports.run = async function(client, message, args){
   }
  let count = 0;
 
-  for(j=0;j<occList.length;j++){
-    if(charid!=occList[j][1]){
-    if(client.charcall.controlCheck(client,occList[j][1])) ++count;
-    client.funcall.chanMsg(client,occList[j][1],msg);
-    }
-  }
+  client.funcall.roomMsg(client,message,msg);
   message.channel.send(`Sent message to ${count} channel(s)!`);
 
 }

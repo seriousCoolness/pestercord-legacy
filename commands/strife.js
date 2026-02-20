@@ -31,11 +31,11 @@ exports.run = (client, message, args) => {
 // if player is in strife, leave strife
 
 if(client.charcall.charData(client,charid,"strife")==true){
-      client.strifecall.leaveStrife(client,message,local,client.charcall.charData(client,charid,"pos"));
-      return;
-
-    //  message.channel.send("You are already in STRIFE! You can leave by ABSCONDING, which is >act 6 1");
+      //client.strifecall.leaveStrife(client,message,local,client.charcall.charData(client,charid,"pos"));
       //return;
+
+      message.channel.send("You are already in STRIFE! You can leave by ABSCONDING, which is >act 6 1");
+      return;
 /*      funcall.actionCheck(client,message);
     message.channel.send("Leaving Strife");
 

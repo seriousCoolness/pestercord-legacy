@@ -54,7 +54,9 @@ for(let i=0;i<playerList.length;i++){
   //deletes userdata
   if(client.userMap.has(playerList[i].slice(0,36))){
       client.userMap.delete(playerList[i].slice(0,36));
+	  client.userMap.set(playerList[i],"NONE","possess");
   }
+  client.userMap.set(playerList[i],"NONE","possess");
 }
 //deletes every transportalizer for the session
 for(let i=0;i<transList.length;i++){

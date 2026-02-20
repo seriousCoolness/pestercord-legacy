@@ -3,7 +3,7 @@ const strifecall = require("../modules/strifecall.js");
 //simple ping command to check if the bot is online.
 exports.type = "sylladex";
 exports.desc = "Uses an item from your Sylladex";
-exports.use = `">use [number]" will use an item with no target. This includes items like Boondollars, Strife and Sylladex cards, Strife Specibi, and certain lootable grists.
+exports.use = `">use [number]" will use an item with no target. This includes items like Boondollars, Strife and Sylladex cards, Strife Specibi, and certain lootable grists. Will also split stacks of normal items in half.
 ">use [number] [number]" is for items that require targets, with the second number being the target. Installing your game disk into your computer, putting totems into a totem lathe, and punching cards in the punch designatrix all require this targeting.`;
 exports.run = (client, message, args) => {
 
@@ -55,12 +55,16 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]] = room;
       client.landMap.set(land,sec,local[0]);
       client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-      return;
+	  
+	  //Display sylladex again.
+	  client.charcall.displaySylladex(client, message, args[0]);
+      
+	  return;
     }
     //else if(client.traitList[client.captchaCode.indexOf(roomCode.charAt(2))] == "COMPUTER" || client.traitList[client.captchaCode.indexOf(roomCode.charAt(3))] == "COMPUTER"){
     else if(client.traitcall.itemTrait(client,room[5][selectRoom],"COMPUTER")){
 
-      if(selectCode.charAt(0) == "/" && (sdex[selectDex][0] == "SBURB DISC")){
+      if(selectCode.charAt(0) == "/" && (sdex[selectDex][0] == "SBURB DISC" || sdex[selectDex][0] == "GRIST TORRENT CD")){
 
       client.tutorcall.progressCheck(client,message,15,["text",`Installed the ${sdex[selectDex][0]} onto the ${room[5][selectRoom][0]}`]);
       let targetItem = sdex.splice(selectDex,1)[0];
@@ -68,9 +72,13 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]] = room;
       client.landMap.set(land,sec,local[0]);
       client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-      return;
+	  
+	  //Display sylladex again.
+	  client.charcall.displaySylladex(client, message, args[0]);
+      
+	  return;
     } else {
-      message.channel.send("You can only install SBURB DISCS onto a computer!");
+      message.channel.send("You can only install DISCS onto a computer!");
       return;
     }
     }
@@ -85,6 +93,10 @@ exports.run = (client, message, args) => {
             sec[local[1]][local[2]][2][local[3]] = room;
             client.landMap.set(land,sec,local[0]);
             client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+			
+			//Display sylladex again.
+			client.charcall.displaySylladex(client, message, args[0]);
+      	
             return;
 
           } else {
@@ -99,7 +111,7 @@ exports.run = (client, message, args) => {
 
           sdex[selectDex][4] = [];
           sdex[selectDex][0] = "CARVED TOTEM";
-          sdex[selectDex][5] = "https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
+          sdex[selectDex][5] = "https://file.garden/Z_W1uUldwUL6rf2p/Cruxite.png"
 
           var firstCardContents = ["PERFECTLY GENERIC OBJECT", "00000000", 1, 1, []];
           var secondCardContents = ["PERFECTLY GENERIC OBJECT", "00000000", 1, 1, []];
@@ -138,6 +150,10 @@ exports.run = (client, message, args) => {
             sdex[selectDex][4].push(funcall.alchemize(client, firstCardContents, secondCardContents, "&&"));
           }
           client.charcall.setAnyData(client, userid, charid, sdex, "sdex");
+		  
+		  //Display sylladex again.
+		  client.charcall.displaySylladex(client, message, args[0]);
+      
         } else {
           message.channel.send("That is not a valid item!")
           return;
@@ -200,6 +216,10 @@ exports.run = (client, message, args) => {
             sec[local[1]][local[2]][2][local[3]] = room;
             client.landMap.set(land,sec,local[0]);
             client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+			
+			//Display sylladex again.
+			client.charcall.displaySylladex(client, message, args[0]);
+			
             return;
           } else {
             message.channel.send("Before you can use the PUNCH DESIGNIX, you must first load a CAPTCHALOGUE CARD into it!")
@@ -243,8 +263,12 @@ exports.run = (client, message, args) => {
 
       let targetItem = sdex.splice(selectDex,1);
       client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-    client.charcall.setAnyData(client,userid,charid,cards,"cards");
-      return;
+      client.charcall.setAnyData(client,userid,charid,cards,"cards");
+      
+	  //Display sylladex again.
+	  client.charcall.displaySylladex(client, message);
+	  
+	  return;
     } else if(sdex[selectDex][1].charAt(0) == "/"){
 
 
@@ -292,6 +316,10 @@ exports.run = (client, message, args) => {
         let targetItem = sdex.splice(selectDex,1);
         client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
         client.charcall.setAnyData(client,userid,charid,cards,"scards");
+		
+		//Display sylladex again.
+	    client.charcall.displaySylladex(client, message, args[0]);
+      
         return;
       }
       if(sdex[selectDex][0]=="BOONDOLLARS"){
@@ -327,7 +355,11 @@ exports.run = (client, message, args) => {
 
         boonMsg+=`\nAdded ${newBoon} BOONDOLLARS to PORKHOLLOW! You now have ${b} BOONDOLLARS!`
         message.channel.send(boonMsg);
-
+		
+	    //Display sylladex again.
+	    client.charcall.displaySylladex(client, message, args[0]);
+		
+		return;      
       } else if(sdex[selectDex][0]=="RAINBOW GRIST"){
 
         let grist = client.charcall.allData(client,userid,charid,"grist");
@@ -342,8 +374,12 @@ exports.run = (client, message, args) => {
         message.channel.send(`Added ${sdex[selectDex][3]} grist of all PRIMARY grist types!`);
         client.charcall.setAnyData(client,userid,charid,grist,"grist");
         let targetItem = sdex.splice(selectDex,1);
-      client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-
+        client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+	  
+	    //Display sylladex again.
+	    client.charcall.displaySylladex(client, message, args[0]);
+      
+	    return;
       } else if(sdex[selectDex][0]=="STRIFE SPECIBUS"){
 
         let port = client.charcall.charData(client,charid,"port");
@@ -355,9 +391,12 @@ exports.run = (client, message, args) => {
         message.channel.send(`Added ${sdex[selectDex][3]} STRIFE PORTFOLIO`);
         client.charcall.setAnyData(client,userid,charid,port,"port");
         let targetItem = sdex.splice(selectDex,1);
-      client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+        client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 
-
+		//Display sylladex again.
+	    client.charcall.displaySylladex(client, message, args[0]);
+      
+		return;
       }
 
        else {
@@ -385,6 +424,7 @@ exports.run = (client, message, args) => {
 		  sdex.unshift(newItem);
 		  client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 		  message.channel.send(`You have split your **${newItem[0].toUpperCase()}** stack in half!`);
+		  client.charcall.displaySylladex(client,message,args[0]);
 		  return;
 	  }
 	  else {

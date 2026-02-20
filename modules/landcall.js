@@ -119,7 +119,7 @@ empty =[];
   for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
-    section[temp[0][0]][temp[0][1]]=[4,2,[[client.funcall.preItem(client,1,7,[],gristSet),[],"ROOM 1",false,client.landcall.consortSpawn(client,message,[`s${sec+1}`,temp[0][0],temp[0][1],0],["shopkeep"],1),[]],[[],[],"ROOM 2",false,[],[]]]];
+    section[temp[0][0]][temp[0][1]]=[4,2,[[client.lootcall.lootList(client,sec+1),[],"ROOM 1",false,client.landcall.consortSpawn(client,message,[`s${sec+1}`,temp[0][0],temp[0][1],0],["shopkeep"],1),[]],[[],[],"ROOM 2",false,[],[]]]];
 
   }
   //Creates the Land Constructs (9 per section)
@@ -142,8 +142,8 @@ empty =[];
     section[temp[0][0]][temp[0][1]]=[0,1,[[[],[],"CLEARING",false,[],[client.lootcall.lootB(client, sec, dubs(8))]]]];
   }
 }
-  //Moon outposts appear on only the first section of a land.
-  if(sec==0){
+  //Moon outposts appear on only the second section of a land.
+  if(sec==1){
     for(let i=0;i<2;i++){
       let moon=[["PROSPIT","DERSE"],["pc","dc"]];
       let temp=empty.splice(Math.floor(Math.random()*empty.length));
@@ -176,7 +176,7 @@ empty =[];
       let transLocal = client.landMap.get(message.guild.id+"medium","transLocal");
       //transSet goes on the land, transSet1 is added to the respective moon.
       var transSet = {
-        local:["s1",temp[0][0],temp[0][1],0,message.guild.id.concat(message.author.id)],
+        local:["s2",temp[0][0],temp[0][1],0,message.guild.id.concat(message.author.id)],
         target:`${message.guild.id}${transCode1}`
       }
 
@@ -187,9 +187,9 @@ empty =[];
 
       let castle = client.landMap.get(message.guild.id+"medium",moon[1][i]);
 
-      castle[transLocal[0]][transLocal[1]][2][0][5].push([`${message.author.username}`,`@/jG${transCode1}`,1,1,[],"https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png"])
+      castle[transLocal[0]][transLocal[1]][2][0][5].push([`${message.author.username}`,`@/jG${transCode1}`,1,1,[],"https://file.garden/Z_W1uUldwUL6rf2p/TRANSPORTALIZER.png"])
 
-      section[temp[0][0]][temp[0][1]]=[11,1,[[[],[],`${moon[0][i]} OUTPOST`,false,[],[[`${moon[0][i]} TRANSPORTALIZER`,`@/jG${transCode}`,1,1,[],"https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png"]]]]];
+      section[temp[0][0]][temp[0][1]]=[11,1,[[[],[],`${moon[0][i]} OUTPOST`,false,[],[[`${moon[0][i]} TRANSPORTALIZER`,`@/jG${transCode}`,1,1,[],"https://file.garden/Z_W1uUldwUL6rf2p/TRANSPORTALIZER.png"]]]]];
       client.transMap.set(`${message.guild.id}${transCode}`,transSet);
       client.transMap.set(`${message.guild.id}${transCode1}`,transSet1);
       client.landMap.set(message.guild.id+"medium",transList,"transList");
@@ -913,32 +913,32 @@ for(i=0;i<1;i++){
 for(i=0;i<5;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=generateBasicTile(26, "RESTAURANT");
-  section[1][temp[0][0]][temp[0][1]]=generateBasicTile(26, "RESTAURANT");
+  section[0][temp[0][0]][temp[0][1]]=generateShopTile(client, 26, "RESTAURANT", 2);
+  section[1][temp[0][0]][temp[0][1]]=generateShopTile(client, 26, "RESTAURANT", 2);
 }
 for(i=0;i<5;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[27,1,[[[],[["CAPTCHALOGUE CARD","11111111",1,4,[]]],"GENERAL STORE",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[27,1,[[[],[["CAPTCHALOGUE CARD","11111111",1,4,[]]],"GENERAL STORE",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=generateShopTile(client,27,"GENERAL STORE",2);
+  section[1][temp[0][0]][temp[0][1]]=generateShopTile(client,27,"GENERAL STORE",2);
 }
 for(i=0;i<5;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=generateBasicTile(28, "CANDY SHOP");
-  section[1][temp[0][0]][temp[0][1]]=generateBasicTile(29, "BUTCHER");
+  section[0][temp[0][0]][temp[0][1]]=generateShopTile(client, 28, "CANDY SHOP", 2);
+  section[1][temp[0][0]][temp[0][1]]=generateShopTile(client, 29, "BUTCHER", 2);
 }
 for(i=0;i<5;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=generateBasicTile(31, "TAILOR");
-  section[1][temp[0][0]][temp[0][1]]=generateBasicTile(30, "ARMORY");
+  section[0][temp[0][0]][temp[0][1]]=generateShopTile(client, 31, "TAILOR", 2);
+  section[1][temp[0][0]][temp[0][1]]=generateShopTile(client, 30, "ARMORY", 3);
 }
 for(i=0;i<5;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=generateBasicTile(32, "JEWELER");
-  section[1][temp[0][0]][temp[0][1]]=generateBasicTile(32, "JEWELER");
+  section[0][temp[0][0]][temp[0][1]]=generateShopTile(client,32,"JEWELER",2);
+  section[1][temp[0][0]][temp[0][1]]=generateShopTile(client,32,"JEWELER",2);
 }
 
 
@@ -992,20 +992,20 @@ for(i=0;i<4;i++){
 for(i=0;i<5;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=generateBasicTile(26, "RESTAURANT");
-  section[3][temp[0][0]][temp[0][1]]=generateBasicTile(26, "RESTAURANT");
+  section[2][temp[0][0]][temp[0][1]]=generateShopTile(client,26,"RESTAURANT",2);
+  section[3][temp[0][0]][temp[0][1]]=generateShopTile(client,26,"RESTAURANT",2);
 }
 for(i=0;i<5;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=generateBasicTile(27, "GENERAL STORE");
-  section[3][temp[0][0]][temp[0][1]]=generateBasicTile(27, "GENERAL STORE");
+  section[2][temp[0][0]][temp[0][1]]=generateShopTile(client,27,"GENERAL STORE",2);
+  section[3][temp[0][0]][temp[0][1]]=generateShopTile(client,27,"GENERAL STORE",2);
 }
 for(i=0;i<5;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=generateBasicTile(32, "JEWELER");
-  section[3][temp[0][0]][temp[0][1]]=generateBasicTile(32, "JEWELER");
+  section[2][temp[0][0]][temp[0][1]]=generateShopTile(client,32,"JEWELER",2);
+  section[3][temp[0][0]][temp[0][1]]=generateShopTile(client,32,"JEWELER",2);
 }
 
 for(i=0;i<1;i++){
@@ -1173,6 +1173,24 @@ function generateBasicTile(icon, name){
 	];
 }
 
+function generateShopTile(client, icon, name, level){
+	return [
+		icon,	// The image used to represent this tile. Sometimes carries other information, like the fact that a given tile is a wall.
+		1,		// The number of rooms in a tile. This is ALMOST always 1.
+		// The actual room array.
+		[
+			// The one (and only) room within this tile
+			[
+				client.lootcall.lootList(client, level),		// Shop inventory
+				[],		// ???
+				name,	// The name of this room.
+				false,	// Whether this room has already been explored/visited.
+				[],		// List of all creatures in the room
+				[]		// List of all items in the room
+			]
+		]
+	];
+}
 
 
 exports.drawMap = async function(client,message,mini) {
@@ -1389,7 +1407,7 @@ for(i=-1;i<2;i++){
 // }
 
 //creates a carpacian
-exports.carSpawn = function(client,local,lunar,sessionID){
+exports.carSpawn = function(client,local,lunar,sessionID,shop){
 
   let picList = [
 	["https://media.discordapp.net/attachments/808757312520585227/814739963824439296/dersite_short.png",
@@ -1405,9 +1423,14 @@ exports.carSpawn = function(client,local,lunar,sessionID){
   let typeList = ["stout carapacian","medium carapacian","tall carapacian","large carapacian"];
   let lunarList = [["derse","prospit"],["DERSITE","PROSPITIAN"]];
   let repList = [[1000000,-1000000],[-1000000,1000000]]
+  let prices = "NONE";
 
   let num = Math.floor(Math.random()*4);
-
+  if(shop==true){
+	  num=1;
+	  prices=[];
+  }
+  
   let npcCount = client.landMap.get(sessionID+"medium","npcCount");
 
   let occ = []
@@ -1453,8 +1476,12 @@ exports.carSpawn = function(client,local,lunar,sessionID){
     b:0,
     bio:`A ${lunarList[1][lunar]} ${typeList[type]}`,
     img:picList[lunar][type],
-    questData:[]
+    questData:[],
+	shopPrices:prices,
+	following:"NONE",
+	followers:[]
   }
+  
 
   let id = `n${sessionID}/${npcCount}`;
 
@@ -1466,6 +1493,60 @@ exports.carSpawn = function(client,local,lunar,sessionID){
 }
 client.landMap.set(sessionID+"medium",npcCount,"npcCount");
 return occ;
+}
+
+exports.jackSpawn = function(client,local,sessionID){
+
+let npcCount = client.landMap.get(sessionID+"medium","npcCount");
+
+let occ = [];
+
+let npcSet = {
+    name: `Jack Noir`,
+    control:[],
+    type: "archagent",
+    faction: "underling",
+    vit:client.underlings["archagent"].vit,
+    gel:client.underlings["archagent"].vit,
+    gristtype: "diamond",
+    strife:false,
+    pos:0,
+    alive:true,
+    local:local,
+    sdex:[],
+    equip:0,
+    trinket:[],
+    armor:[],
+    spec:[],
+    equip:0,
+    scards:1,
+    kinds:[],
+    port:1,
+    modus:"STACK",
+    cards:4,
+    prototype:[],
+    prospitRep:-99999999,
+    derseRep:1,
+    underlingRep:1,
+    playerRep:-9999999,
+    consortRep:-100,
+    prefTarg:[],
+    xp:0,
+    rung:0,
+    b:0,
+    bio:`Archagent everlasting.`,
+    img:"https://file.garden/Z_W1uUldwUL6rf2p/jack_noir.png",
+    questData:[],
+	following:"NONE",
+	followers:[]
+  }
+  
+  let id = `n${sessionID}/${npcCount}`;
+  client.npcMap.set(id,npcSet);
+  let occSet = [false,id];
+  occ.push(occSet);
+  client.landMap.set(sessionID+"medium",npcCount+1,"npcCount");
+  return occ;	
 }
 
 exports.consortSpawn = function(client,message,coords,type,count){
@@ -1518,7 +1599,9 @@ coords.push(sburbid);
           img:`https://cdn.discordapp.com/attachments/653038622135549952/917120918466224138/Salamander.png`,
           dialogue:["Buy my stuff.","Look at all these funny things I found! I bet you want all of them. Hope you brought your boons!","Nak."],
           questData:[client.questcall.createQuest(client,`Shopkeep Consort`,npcCount,coords,"kill")],
-          shopPrices:[]
+          shopPrices:[],
+		  following:"NONE",
+		  followers:[]
         }
         let id = `n${sessionid}/${npcCount}`;
         client.npcMap.set(id,consortSet);
@@ -1531,4 +1614,60 @@ coords.push(sburbid);
   }
   client.landMap.set(sessionid+"medium",npcCount,"npcCount");
   return occ;
+}
+
+exports.currentSection = function(client,message) {
+	let charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
+    let local = client.charcall.charData(client,charid,"local");
+    let sec = client.landMap.get(local[4],local[0]);
+	return sec;
+}
+
+exports.currentArea = function(client,message) {
+	let charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
+    let local = client.charcall.charData(client,charid,"local");
+	let area = client.landcall.currentSection(client,message)[local[1]][local[2]];
+	return area;
+}
+
+exports.currentRoom = function(client,message) {
+	let charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
+    let local = client.charcall.charData(client,charid,"local");
+	let room = client.landcall.currentArea(client,message)[2][local[3]];
+	return room;
+}
+
+exports.displayRoom = function(client, message, targRoom=undefined) {
+	
+	var userid = message.guild.id.concat(message.author.id);
+    var charid = client.userMap.get(userid,"possess");
+	
+	
+	if(targRoom==undefined) {
+		let local = client.charcall.charData(client,charid,"local");
+		let land = local[4];
+		let sec = client.landMap.get(land,local[0]);
+		let area = sec[local[1]][local[2]];
+		let room = area[2][local[3]];
+		let occList = room[4];
+		let dex = room[5];
+		
+		
+		async function roomCheck() {
+		const attachment = await client.imgcall.sdexCheck(client,message,0,[],3,dex,dex.length,room[2]);
+		client.tutorcall.progressCheck(client,message,3,["img",attachment]);
+		}
+		roomCheck();
+		return;
+	} else {
+		let occList = targRoom[4];
+		let dex = targRoom[5];
+		
+		async function roomCheck() {
+		const attachment = await client.imgcall.sdexCheck(client,message,0,[],3,dex,dex.length,targRoom[2]);
+		client.tutorcall.progressCheck(client,message,3,["img",attachment]);
+		}
+		roomCheck();
+		return;
+	}
 }

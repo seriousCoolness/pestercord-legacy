@@ -44,25 +44,39 @@ if(userData.charCount>0){
 }
 var channels = [``,``];
 var aspectChoice;
+var classChoice;
 var channelCheck;
-//T2: checks if the player has registered before and acts accordingly.
+
+//confirm they want to register randomly
+if(!args[0]) {
+	message.channel.send(`If you want to choose a class and aspect, do ${client.auth.prefix}register [class here] [aspect here], or replace either/both with "random" to get one randomly.`);
+	return;
+}
 
 //checks if the user has any character, player or NPC, under their control.
 if(userData.possess=="NONE"){
-  aspectChoice = chooseAspect(args[0],client,message);
+  
+  classChoice = chooseClass(args[0],client,message);
+  if(!classChoice) return;
+  
+  aspectChoice = chooseAspect(args[1],client,message);
   if(!aspectChoice) return;
 }
+
 //checks to see if the currently possessed creature is an NPC, not a player.
 else if(!client.playerMap.has(userData.possess)){
 message.channel.send("You can't re-register while controlling an NPC! possess a player and try again.");
 return;
 }
 //if someone is possessing a player, it won't let them re-register unless they confirm it.
-else if(args[0]==undefined||args[0].toLowerCase()!="confirm"){
-    message.channel.send(`Be careful, if you re-register now, all of your data will be deleted! If you're sure about this, do ${client.auth.prefix}register confirm.`);
+else if(args[0]==undefined||args[args.length-1].toLowerCase()!="confirm"){
+    message.channel.send(`Be careful, if you re-register now, all of your data will be deleted! If you're sure about this, do ${client.auth.prefix}register with confirm at the end.`);
     return;
 }else{
   //only pre-existing players reach this point.
+  classChoice = chooseClass(args[0],client,message);
+  if(!classChoice) return;
+  
   aspectChoice = chooseAspect(args[1],client,message);
   if(!aspectChoice) return;
   //stores channel data for the pre-existing player
@@ -77,11 +91,11 @@ else if(args[0]==undefined||args[0].toLowerCase()!="confirm"){
     }
   await clearConnections(client,sburbid);
 }
-await register(client,message,args,userid,userData,sburbid,aspectChoice,channelCheck,channels);
+await register(client,message,args,userid,userData,sburbid,classChoice,aspectChoice,channelCheck,channels);
 }
 
 //---- Start of Execution ----------------------------------------------------------------------------------------------------
-async function register(client,message,args,userid,userData,sburbid,aspectChoice,channelCheck,channels){
+async function register(client,message,args,userid,userData,sburbid,classChoice,aspectChoice,channelCheck,channels){
   //initializes some basic variables needed for registration.
     var chumhandle = ``;
     var chumtag = ``;
@@ -104,12 +118,13 @@ async function register(client,message,args,userid,userData,sburbid,aspectChoice
       client.landMap.set(message.guild.id+"medium",Date.now(),"registerTimer");
     }*/
 
+  userData.sburbClass = classChoice;
   userData.aspect = aspectChoice;
 
   await createTutorial(client,message,userid,userData);
   var chumData = await chumCheck(client,message,userid,sburbid,chumhandle,chumtag);
   await charSetup(userData,sburbid,channelCheck);
-  var gristSet= await createGristSet(client,message)
+  var gristSet= await createGristSet(client,message);
   var defBedroom = client.funcall.preItem(client,"bedroom",7,[["GLASSES","vh//QaFS",1,1,[]]],gristSet);
   var beginData = await beginWorld(client,userData,defBedroom,armorsets,gristSet);
   var moonData = await dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,defBedroom);
@@ -190,8 +205,8 @@ function chooseAspect(input,client,message){
     aspectChoice="random";
   } else {
     //checks if the given aspect is valid.
-    if(!client.aspects.includes(input.toUpperCase())){
-      message.channel.send("Sorry, that aspect doesn't exist! Re-register with a valid aspect, or none at all to get a random one!");
+    if(input!="random"&&!client.aspects.includes(input.toUpperCase())){
+      message.channel.send("Sorry, that aspect doesn't exist! Re-register with a valid aspect, or type random to get a random one!");
       return;
     } else {
     aspectChoice=input.toUpperCase();
@@ -202,6 +217,32 @@ function chooseAspect(input,client,message){
     aspectChoice = client.aspects[Math.floor((Math.random() * 11))];
   }
   return aspectChoice;
+}
+
+function chooseClass(input,client,message){
+  //sets up some variables and arrays for choosing your class. will eventually
+  //be replaced by user data editing program.
+
+ //either args[0] or args[1] is passed to this function based on when it's called.
+  if(!input){
+    classChoice="random";
+  } else {
+    //checks if the given class is valid.
+    if(input!="random"&&!client.classes.includes(input.toUpperCase())){
+      message.channel.send("Sorry, that class doesn't exist! Re-register with a valid class, or type random to get a random one!");
+      return;
+    } else if(input.toUpperCase()=="LORD"||input.toUpperCase()=="MUSE") { 
+	  message.channel.send("Sorry, master classes are disabled for now! Re-register with a valid class, or type random to get a random one!");
+      return;
+	} else {
+    classChoice=input.toUpperCase();
+    }
+  }
+  //sets the aspect based on registration choice (TO BE REMOVED)
+  if(classChoice === "random"){
+    classChoice = client.classes[Math.floor((Math.random() * 13))];
+  }
+  return classChoice;
 }
 
 function chumCheck(client,message,userid,sburbid,chumhandle,chumtag){
@@ -298,7 +339,7 @@ function beginWorld(client,userData,defBedroom,armorsets,gristSet){
      [[],[],"STUDY",false,[],client.funcall.preItem(client,"study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[ ["CAPTCHALOGUE CARD","11111111",1,4,[]] ]]],gristSet)],
      [[],[],"KITCHEN",false,[],client.funcall.preItem(client,"kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
      [[],[],"BATHROOM",false,[],client.funcall.preItem(client,"bathroom",4,[],gristSet)],
-     [[],[],"YARD",false,[],client.funcall.preItem(client,"yard",4,[["MAILBOX","yT3SpVgY",0,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
+     [[],[],"YARD",false,[],client.funcall.preItem(client,"yard",4,[["MAILBOX","yT3SpVgY",1,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://file.garden/Z_W1uUldwUL6rf2p/sburb_logo.png"],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
      [[],[],"SHED",false,[],client.funcall.preItem(client,"shed",8,[],gristSet)]
    ]]]];
    return [randnum,def];
@@ -361,7 +402,12 @@ function dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,
     return [towerRoom,lunarSway];
 }
 function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,moonData,towerLocal,channels,chumData,repDef){
-    var wakingSheet = {
+    let startingBuild = 20*(client.landMap.get(message.guild.id+"medium","playerList").length+1);
+	if(startingBuild >= 400) {
+		startingBuild = 400;
+	}
+	
+	var wakingSheet = {
       control:[userid],
       owner:sburbid,
       name: `${userData.name}`,
@@ -386,7 +432,9 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
       prototype:[],
       prefTarg:[],
       partyID:"NONE",
-      ai: false
+      ai: false,
+	  following:"NONE",
+	  followers:[]
     };
   var dreamSheet = {
     control:[],
@@ -413,13 +461,15 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
     prototype:[],
     prefTarg:[],
     partyID:"NONE",
-    ai: false
+    ai: false,
+	following:"NONE",
+	followers:[]
   };
   var sburbSheet = {
     name: userData.name,
     ping: message.author.id,
     channel: channels[0],
-    class:userData.class,
+    class:userData.sburbClass,
     aspect:userData.aspect,
     landID:sburbid,
     wakingID:`w${sburbid}`,
@@ -434,7 +484,7 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
     bank: 0,
     mailbox: [],
     gel: 100,
-    grist:[20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    grist:[startingBuild,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     itemsAlchemized:0,
     underlingsDefeated:0,
     tilesDiscovered:0,
@@ -529,7 +579,7 @@ async function generateChannels(client,message,userid,sburbid,channels){
        allow: [`VIEW_CHANNEL`, 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
      },{
        id: message.guild.roles.everyone, //To make it be seen by a certain role, user an ID instead
-       deny: ['VIEW_CHANNEL', 'SEND_MESSAGES'], //Deny permissions
+       deny: ['SEND_MESSAGES'], //Deny permissions
      }
    ]//,
    //parent:"827335332789878814"

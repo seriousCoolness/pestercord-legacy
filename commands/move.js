@@ -12,6 +12,7 @@ exports.run = (client, message, args) => {
   let local = client.charcall.charData(client,charid,"local");
   let mapCheck = true;
   let sec = client.landMap.get(local[4],local[0])
+  let destinationNotifier = "to somewhere else";
 
   if(!args[0]){
 
@@ -39,21 +40,25 @@ exports.run = (client, message, args) => {
       case "north":
         target[1]=local[1]-1;
         msg+=`You move NORTH and enter a `;
+		destinationNotifier = `to the NORTH`;
       break;
       case "s":
       case "south":
         target[1]=local[1]+1;
         msg+=`You move SOUTH and enter a `;
+		destinationNotifier = `to the SOUTH`;
       break;
       case "e":
       case "east":
         target[2]=local[2]+1;
         msg+=`You move EAST and enter a `;
+		destinationNotifier = `to the EAST`;
       break;
       case "w":
       case "west":
         target[2]=local[2]-1;
         msg+=`You move WEST and enter a `;
+		destinationNotifier = `to the WEST`;
       break;
       default:
 
@@ -78,6 +83,7 @@ exports.run = (client, message, args) => {
     } else {
     msg+=`You move between rooms and enter the `;
   }
+    destinationNotifier = `and enters the ${sec[local[1]][local[2]][2][local[3]][2]}`;
     mapCheck = false;
 
   }
@@ -94,6 +100,9 @@ exports.run = (client, message, args) => {
       return;
     }
   }
+  
+  client.funcall.roomMsg(client,message,`**${client.charcall.charData(client,charid,"name").toUpperCase()}** has left the room ${destinationNotifier}!`);
+  
   let move = client.funcall.move(client,message,charid,local,target,mapCheck,msg);
 
 }

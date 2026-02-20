@@ -89,5 +89,14 @@ exports.run = (client, message, args) => {
   client.landMap.set(land,sec,local[0]);
   client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
   client.funcall.tick(client,message);
+  
+  //Display room after being altered.
+client.landcall.displayRoom(client,message);
+
+//Display sylladex again.
+client.charcall.displaySylladex(client,message,args[0]);
+  
+  client.funcall.roomMsg(client,message,`**${client.charcall.charData(client,charid,"name").toUpperCase()}** has ejected **${dropItem[0]}** [x${dropItem[3]}] in the room.`);
+  
   client.tutorcall.progressCheck(client,message,6,["text",`Ejected the ${dropItem[0]}!`]);
 }

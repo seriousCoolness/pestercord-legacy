@@ -24,6 +24,7 @@ exports.run = (client, message, args) => {
   let mapCheck = true;
 
   let msg=``;
+  let destinationNotifier = "entered somewhere";
 
   let target = [local[0],local[1],local[2],0,local[4]];
 
@@ -48,7 +49,7 @@ exports.run = (client, message, args) => {
     if(!args[0]){
 
       for(let i=1;i<8;i++){
-        msg+=`**[${gate >= i ? i : "X"}] ${client.emojis.cache.get('736006488086282261')} GATE ${i}**\n\n`;
+        msg+=`**[${gate >= i ? i : "X"}] ${client.emojis.cache.get('1419319839641702490')} GATE ${i}**\n\n`;
       }
 
       gateSend = new client.MessageEmbed()
@@ -70,7 +71,7 @@ exports.run = (client, message, args) => {
     }
 
     if(value>gate){
-      if (client.traitcall.traitCheck(client,charid,"ROCKET")[1] || client.traitcall.traitCheck(client,charid,"SPACE")[0] || client.charcall.allData(client,userid,charid,"godtier")==true) {
+      if (client.traitcall.traitCheck(client,charid,"ROCKET")[1] || client.traitcall.traitCheck(client,charid,"SPACE")[0] || client.charcall.allData(client,userid,charid,"godtier")==true || client.charcall.allData(client,userid,charid,"dreamer")==true) {
         msg+= `House hasn't been built high enough to reach that gate, but you don't care, you can fly!\n`
       } else {
         message.channel.send(`House hasn't been built high enough to reach that gate! Have your server player build up your house with ${client.auth.prefix}build`);
@@ -122,12 +123,15 @@ exports.run = (client, message, args) => {
 
     }
     msg+=`You ascend to the ${gateName[value-1]} GATE and find yourself in a `
+	destinationNotifier = `entered the ${gateName[value-1]} GATE`;
+	
 	}
     break;
     case 3:
     target = ["h",0,0,0,local[4]];
     mapCheck=false;
     msg+=`You enter the RETURN NODE and are transported to a `
+	destinationNotifier = 'entered a RETURN NODE';
 
     break;
     case 6:
@@ -166,6 +170,7 @@ exports.run = (client, message, args) => {
     target = ["h",0,0,0,targetLand];
     mapCheck=false;
     msg+=`You enter the GATE and are transported to a `
+	destinationNotifier = 'entered a GATE';
 	}
     break;
     case 1:
@@ -174,6 +179,7 @@ exports.run = (client, message, args) => {
 
       target[0]=target[0].slice(0,-1);
       msg+=`You exit the DUNGEON through the `;
+	  destinationNotifier = 'exited the DUNGEON';
 
     }else{
 
@@ -184,6 +190,7 @@ exports.run = (client, message, args) => {
         return;
       }
       msg+=`You enter the DUNGEON through the `;
+	  destinationNotifier = 'entered the DUNGEON';
     }
 
     break;
@@ -195,6 +202,7 @@ exports.run = (client, message, args) => {
         target[0]+="m";
       }
       msg+=`You cross the `
+	  destinationNotifier = 'crossed the CHAIN';
       setTimeout(function(){client.tutorcall.progressCheck(client,message,41);},1500);
     break;
     case 46:
@@ -206,6 +214,7 @@ exports.run = (client, message, args) => {
         target[0]=target[0].slice(0,-1)+`${(floor+1)}`;
       }
       msg+=`You DESCEND deeper into the DUNGEON, you can go back up using the `;
+	  destinationNotifier = 'DESCENDed to the next floor'
 
     break;
     case 47:
@@ -223,6 +232,7 @@ exports.run = (client, message, args) => {
       }
 
       msg+=`You ASCEND higher in the DUNGEON, you can go back down using the `
+	  destinationNotifier = 'ASCENDed to the previous floor';
 
     break;
     case 12:
@@ -232,6 +242,7 @@ exports.run = (client, message, args) => {
         target[1]=5;
         target[2]=5;
         msg+=`Entering the `;
+		destinationNotifier = 'entered the castle';
       } else {
         if(client.landMap.has(local[4],"castleLocal")){
           castleLocal = client.landMap.get(local[4],"castleLocal");
@@ -240,6 +251,7 @@ exports.run = (client, message, args) => {
         }
         target[0]=target[0].slice(0,-1);
         msg+=`Exiting the `
+		destinationNotifier = 'exited the castle';
       }
 
     break;
@@ -248,6 +260,17 @@ exports.run = (client, message, args) => {
     message.channel.send("You can't do that here!");
     return;
 
+  }
+  
+  let occOld = sec[local[1]][local[2]][2][local[3]][4];
+  for(let i=0;i<occOld.length;i++){
+    try{
+      if(occOld[i][1]!=charid){
+        client.funcall.chanMsg(client,occOld[i][1],`**${client.charcall.charData(client,charid,"name").toUpperCase()}** has ${destinationNotifier}!`);
+      }
+    }catch(err){
+      console.log(err);
+    }
   }
 
   client.funcall.actionCheck(client,message);

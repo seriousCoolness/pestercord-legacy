@@ -74,7 +74,7 @@ exports.compTest = function(client, message, charid, room) {
 
     let i;
     //if first value in array is true, it means there is a computer, if both are true, it means the computer has sburbed installed
-    let comp = [false,false];
+    let comp = [false,false,false];
 
 
     for(i=0; i < room[5].length; i++) {
@@ -84,8 +84,14 @@ exports.compTest = function(client, message, charid, room) {
 
         let j;
         for(j=0;j<room[5][i][4].length; j++){
-          if(room[5][i][4][j][1].charAt(0) == "/"&&room[5][i][4][j][0]=="SBURB DISC"){
+          if(room[5][i][4][j][1] == "/QjGOZb7" && room[5][i][4][j][0]=="SBURB DISC"){
             comp[1]=true;
+          }
+        }
+		let k;
+        for(k=0;k<room[5][i][4].length; k++){
+          if(room[5][i][4][k][1] == "/QjGXcbA" && room[5][i][4][k][0]=="GRIST TORRENT CD"){
+            comp[2]=true;
           }
         }
       }
@@ -96,8 +102,14 @@ exports.compTest = function(client, message, charid, room) {
 
         let j;
         for(j=0;j<currentInv[i][4].length; j++){
-          if(currentInv[i][4][j][1].charAt(0) == "/"&&currentInv[i][4][j][0]=="SBURB DISC"){
+          if(currentInv[i][4][j][1] == "/QjGOZb7" && currentInv[i][4][j][0]=="SBURB DISC"){
             comp[1]=true;
+          }
+        }
+		let k;
+        for(k=0;k<currentInv[i][4].length; k++){
+          if(currentInv[i][4][k][1] == "/QjGXcbA" && currentInv[i][4][k][0]=="GRIST TORRENT CD"){
+            comp[2]=true;
           }
         }
       }
@@ -108,8 +120,14 @@ exports.compTest = function(client, message, charid, room) {
 
         let j;
         for(j=0;j<specibus[i][4].length; j++){
-          if(specibus[i][4][j][1].charAt(0) == "/"&&specibus[i][4][j][0]=="SBURB DISC"){
+          if(specibus[i][4][j][1] == "/QjGOZb7" && specibus[i][4][j][0]=="SBURB DISC"){
             comp[1]=true;
+          }
+        }
+		let k;
+        for(k=0;k<specibus[i][4].length; k++){
+          if(specibus[i][4][k][1] == "/QjGXcbA" && specibus[i][4][k][0]=="GRIST TORRENT CD"){
+            comp[2]=true;
           }
         }
       }
@@ -119,8 +137,14 @@ exports.compTest = function(client, message, charid, room) {
 
       let j;
       for(j=0;j<armor[0][4].length; j++){
-        if(armor[0][4][j][1].charAt(0) == "/"&&armor[0][4][j][0]=="SBURB DISC"){
+        if(armor[0][4][j][1] == "/QjGOZb7" && armor[0][4][j][0]=="SBURB DISC"){
           comp[1]=true;
+        }
+      }
+	  let k;
+      for(k=0;k<armor[0][4].length; k++){
+        if(armor[0][4][k][1] == "/QjGXcbA" && armor[0][4][k][0]=="GRIST TORRENT CD"){
+          comp[2]=true;
         }
       }
     }
@@ -129,8 +153,14 @@ exports.compTest = function(client, message, charid, room) {
 
       let j;
       for(j=0;j<trinket[0][4].length; j++){
-        if(trinket[0][4][j][1].charAt(0) == "/"&&trinket[0][4][j][0]=="SBURB DISC"){
+        if(trinket[0][4][j][1] == "/QjGOZb7" && trinket[0][4][j][0]=="SBURB DISC"){
           comp[1]=true;
+        }
+      }
+	  let k;
+      for(k=0;k<trinket[0][4].length; k++){
+        if(trinket[0][4][k][1] == "/QjGXcbA" && trinket[0][4][k][0]=="GRIST TORRENT CD"){
+          comp[2]=true;
         }
       }
     }

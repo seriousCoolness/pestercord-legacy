@@ -35,9 +35,15 @@ if(pos!=init[turn][0]){
   message.channel.send("It's not your turn!");
   return;
 }
+
 //as long as the character has a weapon equipped, it overrides the default damage.
   if(spec.length>0){
-    damage=tierDmg[spec[equip][2]];
+	  try{
+		damage=tierDmg[spec[equip][2]];
+	  } catch(err) {
+		message.channel.send("CORRUPTION DETECTED! Somethings wrong with your weapon!");
+		return; 
+	  }
   }
 
 //Check if EQUIP is an actual weapon in the specibus
@@ -330,11 +336,25 @@ return;
     client.strifecall.strifeList(client,local,active,list,turn,init,charid,0,`SELECT A TARGET (${client.auth.prefix}list)`)
     return;
   }
-
-  //Make sure second argument is a number
-  target = parseInt(args[1], 10) - 1;
+  
+  let target;
+  
+  if(args[1].toLowerCase() != "self") {
+    //Make sure second argument is a number
+	target = parseInt(args[1], 10) - 1;
+  }
+  else {
+	target = pos;
+  }
+  
+  
   if(isNaN(target) || target >active.length-1 || target < 0){
     message.channel.send(`That is not a valid target! It must be a number from 1 to ${active.length}.`);
+    return;
+  }
+  
+  if(list[pos][1]==list[target][1] && args[1].toLowerCase()!="self") {
+	message.channel.send(`That is yourself! If you really want to target yourself, use >act ${args[0]} self`);
     return;
   }
 

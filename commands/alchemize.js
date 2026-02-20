@@ -158,6 +158,15 @@ if(sdex.length > client.charcall.charData(client,charid,"cards")){
   client.charcall.setAnyData(client,userid,charid,gristCheck,"grist");
 
   client.funcall.tick(client,message);
+  
+  //Display sylladex again.
+  async function dexCheck(){
+	let dex = client.charcall.charData(client,charid,"sdex");
+    let cards = client.charcall.charData(client,charid,"cards");
+    const attachment = await client.imgcall.sdexCheck(client,message,0,args,0,dex,cards,"sylladex");
+	client.tutorcall.progressCheck(client,message,7,["img",attachment]);
+  }
+  dexCheck();
 
   client.funcall.actionCheck(client,message,"alchemized");
   client.tutorcall.progressCheck(client,message,31,["text",msg]);

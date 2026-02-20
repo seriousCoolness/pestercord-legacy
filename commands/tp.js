@@ -6,7 +6,7 @@ exports.run = (client, message, args) => {
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
 
-  if(!client.funcall.dmcheck(client,message)&&!client.traitcall.traitCheck(client,charid,"SPACE")[1]){
+  if(!client.charcall.canTeleport(client,userid,charid)&&!client.funcall.dmcheck(client,message)){
     message.channel.send("You must have the SPACE set bonus or be a DM to teleport!");
     return;
   }
@@ -51,7 +51,8 @@ exports.run = (client, message, args) => {
   if(target[0]=="h"){
     mapCheck=false;
   }
-
+  
+  client.charcall.checkFollowersCanFollow(client,userid,charid,"TP");
   client.funcall.move(client,message,charid,local,target,mapCheck,`Teleporting to **${client.charcall.charData(client,targetid,"name")}**\nEntering a `);
 
 }
