@@ -47,7 +47,7 @@ exports.run = (client, message, args) => {
 		
 		let isSameSection = playLocal[0]==spriteLocal[0]&&playLocal[4]==spriteLocal[4];
 		
-		if(!isSameSection) {
+		if(!isSameSection&&!client.traitcall.checkPendant(client,charid)) {
 			message.channel.send("You call for your sprite, but nothing happens. They must be too far away to hear.");
 			return;
 		} else {

@@ -247,11 +247,14 @@ exports.checkFollowersCanFollow = function(client,userid,charid,movementMethod="
 		let followeruserid = userid;
 		if(client.charcall.controlCheck(client,followers[i])) followeruserid=client.charcall.charData(client,followers[i],"control")[0];
 		
-		if (movementMethod=="FLY"&&!client.charcall.canFly(client,followeruserid,followers[i])) {
+		if (movementMethod=="FLY"&&(!client.charcall.canFly(client,followeruserid,followers[i])||(!client.traitcall.checkPendant(client,charid)&&client.charcall.charData(client,followers[i],"type")=="sprite"))) {
 			client.charcall.ceaseFollow(client,followeruserid,followers[i],charid,`**${client.charcall.charData(client,followers[i],"name")}** stopped following **${client.charcall.charData(client,charid,"name")}** because they can't fly.`);
 		}
 		if (movementMethod=="TP"&&!client.charcall.canTeleport(client,followeruserid,followers[i])) {
 			client.charcall.ceaseFollow(client,followeruserid,followers[i],charid,`**${client.charcall.charData(client,followers[i],"name")}** stopped following **${client.charcall.charData(client,charid,"name")}** because they can't teleport.`);
+		}
+		if (movementMethod=="GATE"&&(!client.traitcall.checkPendant(client,charid)&&client.charcall.charData(client,followers[i],"type")=="sprite")) {
+			client.charcall.ceaseFollow(client,followeruserid,followers[i],charid,`**${client.charcall.charData(client,followers[i],"name")}** stopped following **${client.charcall.charData(client,charid,"name")}** because they don't possess a sprite medallion.`);
 		}
 	}
 }

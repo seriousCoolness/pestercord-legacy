@@ -458,3 +458,15 @@ message.channel.send({file:[attachment]});
   .addField(`**ITEM INVENTORY**`,msg3)*/
 
 }
+
+//checks the player's inventory for the Sprite Medallion
+exports.checkPendant = function(client,charid) {
+	let currentInv = client.charcall.charData(client,charid,"sdex");
+	
+	for(i=0; i < currentInv.length; i++) {
+		if(currentInv[i][0]=="SPRITE MEDALLION"&&currentInv[i][1]=="/!jG3ffd"&&currentInv[i][5]==='https://file.garden/Z_W1uUldwUL6rf2p/Medallion.png') {
+			return true;
+		}
+	}
+	return false;
+}
