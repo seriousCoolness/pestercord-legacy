@@ -144,7 +144,6 @@ exports.displaySylladex = function(client, message, slotChanged=undefined) {
   let cards = client.charcall.charData(client,charid,"cards");
   let name = client.charcall.charData(client,charid,"name");
   
-  console.log(dex.length);
   //Set page to display.
   let page;
   if(slotChanged==undefined)
@@ -152,7 +151,6 @@ exports.displaySylladex = function(client, message, slotChanged=undefined) {
   else
 	  page=Math.floor(slotChanged/10);
   
-  console.log(page);
 	async function dexCheck(){
 		
       const attachment = await client.imgcall.sdexCheck(client,message,page,[],0,dex,cards,"sylladex");

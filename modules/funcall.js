@@ -1021,12 +1021,21 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
     }
   }
   
+  //Make Sprite Pendant available once player reaches section 2 of their own land.
+  if(target[0]==="s2"&&target[4]===userid) {
+	  client.sburbMap.set(target[4],true,"pendantAvailable");
+  }
+  
   if(displayMessage)
   moveEmbed();
   setTimeout(function(){
     client.tutorcall.progressCheck(client,message,8);
     client.tutorcall.progressCheck(client,message,9)
+	//Gift Sprite Pendant, if available.
+	if(client.charcall.charData(client,charid,"type")==="player"&&client.sburbMap.get(userid,"pendantAvailable"))
+	  client.funcall.giftPendant(client,message,userid);
   },1500);
+  
 }
 function dreamCheck(client,target,local){
 
@@ -1057,4 +1066,41 @@ exports.checkCharacter = function(client,message,targId) {
     {name:`**BIO**`,value:`${client.charcall.allData(client,userid,targId,"bio")}`})
     .setImage(client.charcall.allData(client,userid,targId,"img"));
     client.tutorcall.progressCheck(client,message,16,["embed",listPrint]);
+}
+
+exports.giftPendant = function(client,message,userid) {
+	
+	var charid = client.userMap.get(userid,"possess");
+	var spriteID = client.sburbMap.get(userid,"spriteID");
+	
+	let playLocal = client.charcall.charData(client,charid,"local");
+	let spriteLocal = client.charcall.charData(client,spriteID,"local");
+	
+	let isSameRoom = playLocal[0]==spriteLocal[0]&&playLocal[1]==spriteLocal[1]&&playLocal[2]==spriteLocal[2]&&playLocal[3]==spriteLocal[3]&&playLocal[4]==spriteLocal[4];
+	
+	//check if in same room as sprite.
+	if(!isSameRoom)
+		return;
+	
+	let dex = client.charcall.charData(client,charid,"sdex");
+	let modus = client.charcall.charData(client,charid,"modus");
+	let cards = client.charcall.charData(client,charid,"cards");
+	let name = client.charcall.charData(client,charid,"name");
+	
+	//check if inventory is full.
+	if(dex.length>=cards)
+		return;
+	
+	let pendantReceived = client.sburbMap.get(userid,"pendantReceived");
+	
+	//give player pendant if they haven't gotten it already.
+	if(!pendantReceived) {
+		let pendantItem = ["SPRITE MEDALLION","/!jG3ffd",6,1,[],"https://file.garden/Z_W1uUldwUL6rf2p/Medallion.png"];
+		dex.unshift(pendantItem);
+		client.charcall.setAnyData(client,userid,charid,dex,"sdex");
+		client.sburbMap.set(userid,true,"pendantReceived");
+		client.charcall.displaySylladex(client,message,0);
+		message.channel.send(`**${client.charcall.charData(client,spriteID,"name")}:** Take this. You can use it to summon me from anywhere using the sprite command.`);
+		return;
+	}
 }

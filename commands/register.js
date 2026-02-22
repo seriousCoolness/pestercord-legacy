@@ -118,7 +118,7 @@ async function register(client,message,args,userid,userData,sburbid,classChoice,
       client.landMap.set(message.guild.id+"medium",Date.now(),"registerTimer");
     }*/
 
-  userData.sburbClass = classChoice;
+  userData.class = classChoice;
   userData.aspect = aspectChoice;
 
   await createTutorial(client,message,userid,userData);
@@ -213,7 +213,7 @@ function chooseAspect(input,client,message){
     }
   }
   //sets the aspect based on registration choice (TO BE REMOVED)
-  if(aspectChoice === "random"){
+  if(aspectChoice.toLowerCase()=="random"){
     aspectChoice = client.aspects[Math.floor((Math.random() * 11))];
   }
   return aspectChoice;
@@ -239,7 +239,7 @@ function chooseClass(input,client,message){
     }
   }
   //sets the aspect based on registration choice (TO BE REMOVED)
-  if(classChoice === "random"){
+  if(classChoice.toLowerCase()=="random") {
     classChoice = client.classes[Math.floor((Math.random() * 13))];
   }
   return classChoice;
@@ -402,7 +402,7 @@ function dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,
     return [towerRoom,lunarSway];
 }
 function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,moonData,towerLocal,channels,chumData,repDef){
-    let startingBuild = 20*(client.landMap.get(message.guild.id+"medium","playerList").length+1);
+    let startingBuild = 20*(client.landMap.get(message.guild.id+"medium","playerList").length);
 	if(startingBuild >= 400) {
 		startingBuild = 400;
 	}
@@ -469,7 +469,7 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
     name: userData.name,
     ping: message.author.id,
     channel: channels[0],
-    class:userData.sburbClass,
+    class:userData.class,
     aspect:userData.aspect,
     landID:sburbid,
     wakingID:`w${sburbid}`,
@@ -519,7 +519,9 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
     revived:false,
     godtier:false,
     sleepTimer:0,
-    spriteID:""
+    spriteID:"",
+	pendantAvailable:false,
+	pendantReceived:false
   }
   //pushes all playerdata to the proper databases.
   client.playerMap.set(`w${sburbid}`,wakingSheet);
