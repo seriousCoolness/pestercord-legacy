@@ -52,6 +52,7 @@ try{
     avatarURL: client.charcall.allData(client,userid,charid,"chumpic")
   });
   }
+  console.log(`${client.charcall.allData(client,userid,charid,"chumhandle")}: ${msg}`);
     message.react(`✅`);
 	} catch (error) {
 		console.error('Error trying to send: ', error);

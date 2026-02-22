@@ -28,6 +28,7 @@ exports.run = async function(client, message, args){
  let count = 0;
 
   client.funcall.roomMsg(client,message,msg);
+  console.log(`${name}: ${msg}`);
   message.channel.send(`Sent message to ${count} channel(s)!`);
 
 }
