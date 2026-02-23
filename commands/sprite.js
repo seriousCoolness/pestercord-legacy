@@ -38,9 +38,7 @@ exports.run = (client, message, args) => {
 		client.charcall.setAnyData(client,userid,spriteID,`${args[1].toUpperCase()}SPRITE`,"name");
 		client.funcall.checkCharacter(client,message,spriteID);
 		return;
-	}
-	
-	if(args[0]=="call") {
+	} else if(args[0]=="call") {
 		var charid = client.userMap.get(userid,"possess");
 		let playLocal = client.charcall.charData(client,charid,"local");
 		let spriteLocal = client.charcall.charData(client,spriteID,"local");
@@ -85,8 +83,7 @@ exports.run = (client, message, args) => {
 			return;
 			}
 		}
-	}
-	if(args[0]=="follow") {
+	} else if(args[0]=="follow") {
 		var charid = client.userMap.get(userid,"possess");
 		let playLocal = client.charcall.charData(client,charid,"local");
 		let spriteLocal = client.charcall.charData(client,spriteID,"local");
@@ -106,10 +103,18 @@ exports.run = (client, message, args) => {
 			//message.channel.send("Your sprite began following you.");
 			return;
 		}
-	}
-	
-	if(args[0]) {
-		message.channel.send(`Not implemented yet!`);
+	} else if(args[0]=="prototype") {
+		if(!args[1]) {
+			message.channel.send("You must specify an item to prototype!");
+			return;
+		}
+		
+		const cmd = client.commands.get("prototype");
+		protoArgs = [args[1]];
+		cmd.run(client,message,protoArgs);
+		return;
+	} else if(args[0]) {
+		message.channel.send(`Not a valid subcommand! Valid subcommands are: rename, call, follow, or prototype.`);
 		return;
 	}
 }
