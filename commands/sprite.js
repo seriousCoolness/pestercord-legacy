@@ -5,7 +5,8 @@ exports.use = `">sprite" allows you to perform various interactions with your sp
 ">sprite follow" will toggle your sprite between following you between rooms and staying put when you are both in the same room.
 ">sprite rename [name]" will set your sprite's name to "[name]sprite".
 ">sprite call" will allow you to summon your sprite as long as they're in the same section as you. Acquiring a Sprite Medallion lifts this range restriction.
-">sprite prototype [slot]" will prototype an item from your inventory, as long as you're in the same room.`;
+">sprite prototype [slot]" will prototype an item from your inventory, as long as you're in the same room.
+">sprite heal" will ask your sprite to heal you, as long as you're in the same room.`;
 exports.run = (client, message, args) => {
 	
 	var userid = message.guild.id.concat(message.author.id);
@@ -23,7 +24,8 @@ exports.run = (client, message, args) => {
 ">sprite follow" will toggle your sprite between following you between rooms and staying put when you are both in the same room.
 ">sprite rename [name]" will set your sprite's name to "[name]sprite".
 ">sprite call" will allow you to summon your sprite as long as they're in the same section as you. Acquiring a Sprite Medallion lifts this range restriction.
-">sprite prototype [slot]" will prototype an item from your inventory, as long as you're in the same room.`);
+">sprite prototype [slot]" will prototype an item from your inventory, as long as you're in the same room.
+">sprite heal" will ask your sprite to heal you, as long as you're in the same room.`);
 
 		client.funcall.checkCharacter(client,message,spriteID);
 		return;
@@ -112,6 +114,10 @@ exports.run = (client, message, args) => {
 		const cmd = client.commands.get("prototype");
 		protoArgs = [args[1]];
 		cmd.run(client,message,protoArgs);
+		return;
+	} else if(args[0]=="heal") {
+		const cmd = client.commands.get("heal");
+		cmd.run(client,message,[]);
 		return;
 	} else if(args[0]) {
 		message.channel.send(`Not a valid subcommand! Valid subcommands are: rename, call, follow, or prototype.`);
