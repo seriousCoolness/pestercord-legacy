@@ -4,7 +4,8 @@ exports.type = "strife";
 exports.desc = "Take action in strife";
 exports.use = `">act" lists all actions that are availible for you to take. Actions cost Stamina to take, and greyed out actions can't be taken.
 "act [number]" lists all valid targets, much like the >list command.
-"act [action number] [target number]" takes the chosen action against the chosen target.`;
+"act [action number] [target number]" takes the chosen action against the chosen target.
+You can also shorten this command to just ">a".`;
 exports.run = (client, message, args) => {
 
 //Check if player is in STRIFE
