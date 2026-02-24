@@ -225,7 +225,6 @@ if(client.charcall.charData(client,list[target][1],"type")=="player"){
 
     //call the function to remove the character from strife
     //if there were only two characters left, both are removed from strife.
-	console.log(active);
     if(active.length==2){
       leaveStrife(client,message,local,target);
       message.channel.send(`Last opponent defeated!`);
@@ -418,9 +417,8 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
 }
 //call function to remove the dead target from strife
       leaveStrife(client,message,local,target);
-	  console.log(active);
+	  
 	  let factionCheck = client.charcall.charData(client,list[active[0]][1],"faction");
-	  console.log(factionCheck);
 	  let sameFaction = true;
 	  //check if everyone left is the same faction.
 	  for(let i=0;i<active.length;i++) {
