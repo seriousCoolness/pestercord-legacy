@@ -181,28 +181,32 @@ try{
   let list = client.strifeMap.get(strifeLocal,"list");
   let active = client.strifeMap.get(strifeLocal,"active");
   let userid = message.guild.id.concat(message.author.id);
+  
   //sets the target to be dead, regardless of character type.
   client.charcall.setAnyData(client,userid,list[target][1],false,"alive");
   //if the character dying is a player, give kill credit.
-  if(client.charcall.charData(client,list[target][1],"type")=="player"){
+if(client.charcall.charData(client,list[target][1],"type")=="player"){
     if(client.configcall.get(client, message, "DEATH")==0) {
 		client.charcall.setAnyData(client,userid,list[target][1],true,"alive");
     }
+
   charid = client.userMap.get(userid,"possess");
   //as long as the killer has a character that tracks player kills, they get the credit.
   if(client.charcall.allData(client,userid,charid,"playersDefeated")!="NONE"){
-  increase = client.charcall.allData(client,userid,charid,"playersDefeated");
-  increase++;
-  client.charcall.setAnyData(client,userid,charid,increase,"playersDefeated");
-  if(increase>client.landMap.get(`${message.guild.id}mediumlead`,"playersDefeated")[1]){
-    client.landMap.set(`${message.guild.id}mediumlead`,[client.charcall.charData(client,charid,"name"),increase],"playersDefeated");
+    increase = client.charcall.allData(client,userid,charid,"playersDefeated");
+    increase++;
+    client.charcall.setAnyData(client,userid,charid,increase,"playersDefeated");
+    if(increase>client.landMap.get(`${message.guild.id}mediumlead`,"playersDefeated")[1]){
+      client.landMap.set(`${message.guild.id}mediumlead`,[client.charcall.charData(client,charid,"name"),increase],"playersDefeated");
+    }
   }
-}
+  
     let name = client.charcall.charData(client,list[target][1],"name");
     let underlevel = [];
     //send death message to all participating character's terminals
     for(let k=0;k<active.length;k++){
-      //any npcs involved in killing a player gain xp, amount to be changed.
+      
+	  //any npcs involved in killing a player gain xp, amount to be changed.
       if(client.charcall.charData(client,list[active[k]][1],"faction")!="player"&&client.charcall.allData(client,userid,list[active[k]][1],"xp")!="NONE"){
         underlevel.push(list[active[k]][1]);
       }
@@ -211,21 +215,23 @@ try{
       client.funcall.chanMsg(client,list[active[k]][1],`${name} died!`);
       }
     }
+	
     underxp = Math.floor(client.charcall.allData(client,userid,list[target][1],"xp")/2/underlevel.length);
     for(let i=0;i<underlevel.length;i++){
       client.funcall.chanMsg(client,underlevel[i],`${name} died!\nYou gained ${underxp} XP!`);
       giveXp(client,underlevel[i],underxp);
     }
-      client.funcall.chanMsg(client,list[target][1],`***YOU DIED***`);
+    client.funcall.chanMsg(client,list[target][1],`***YOU DIED***`);
 
     //call the function to remove the character from strife
     //if there were only two characters left, both are removed from strife.
+	console.log(active);
     if(active.length==2){
       leaveStrife(client,message,local,target);
       message.channel.send(`Last opponent defeated!`);
       leaveStrife(client,message,local,pos);
       //this is for if you kill yourself in strife.
-    }else if(active.length<=1){
+    } else if(active.length<=1) {
       leaveStrife(client,message,local,pos);
       //in every other case,just the dead player is removed.
     } else {
@@ -233,7 +239,7 @@ try{
     }
     //since leaveStrife already handles ending strife, it doesn't need to be touched here.
 //end of player kill
-  }else{
+} else {
     //the only reason npcs are seperate from players here is because they need to drop grist.
     let npc;
     npc = client.charcall.charData(client,list[target][1],"type");
@@ -412,11 +418,23 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
 }
 //call function to remove the dead target from strife
       leaveStrife(client,message,local,target);
-      if(active.length<=1){
-        client.tutorcall.progressCheck(client,message,37,["text",`Last opponent defeated, leaving Strife!`]);
-        leaveStrife(client,message,local,0,false);
-
-      }
+	  console.log(active);
+	  let factionCheck = client.charcall.charData(client,list[active[0]][1],"faction");
+	  console.log(factionCheck);
+	  let sameFaction = true;
+	  //check if everyone left is the same faction.
+	  for(let i=0;i<active.length;i++) {
+        if(client.charcall.charData(client,list[active[i]][1],"faction")!=factionCheck){
+          sameFaction=false;
+        }
+	  }
+	  //if so, end the strife.
+	  if(sameFaction) {
+	    for(let i=0;i<active.length;i++) {
+          leaveStrife(client,message,local,active[i],false);
+	    }
+		client.tutorcall.progressCheck(client,message,37,["text",`Last opponent defeated, leaving Strife!`]);
+	  }
   }
 }catch(err){
   console.log(err);
