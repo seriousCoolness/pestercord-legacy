@@ -858,6 +858,13 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
   var userid = message.guild.id.concat(message.author.id);
   let sessionID = local[4].substring(0,19);
   
+  //move followers too
+  let followers = client.charcall.charData(client,charid,"followers");
+  for(let i=0;i<followers.length;i++) {
+	let followerLocal = client.charcall.charData(client,followers[i],"local");
+	client.funcall.move(client,message,followers[i],followerLocal,target,mapCheck,msg,"following to",false);
+  }
+  
   if(local[0]==target[0]&&local[4]==target[4]){
 	
     targSec[local[1]][local[2]][2][local[3]][4].splice(targSec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
@@ -925,13 +932,6 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
   client.funcall.tick(client,message);
   client.charcall.setAnyData(client,userid,charid,target,"local");
   client.landMap.set(target[4],targSec,target[0]);
-  
-  //move followers too
-  let followers = client.charcall.charData(client,charid,"followers");
-  for(let i=0;i<followers.length;i++) {
-	let followerLocal = client.charcall.charData(client,followers[i],"local");
-	client.funcall.move(client,message,followers[i],followerLocal,target,mapCheck,msg,"following to",false);
-  }
 
   let occNew = targSec[target[1]][target[2]][2][target[3]][4];
   let location = targSec[target[1]][target[2]][2][target[3]][2];
