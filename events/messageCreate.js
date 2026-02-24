@@ -41,7 +41,7 @@ module.exports = (client, message) => {
   //list of all commands accepted pre-registry.
   var preReg =["register","help","ping","initialize","scratch","leaderboard","config","name","config2"];
   //list of all commands that can be taken in strife
-  var strifeAct =["abscond","act","armor","bio","check","chumcheck","chumroll","config","consume","debug","givegrist","giveitem","help","initialize","leaderboard","list","pass","pester","ping","possess","push","say","scratch","spawn","specibus","stats","strife","switch","sylladex","tutorial","trinket","trait","grist","sprite"];
+  var strifeAct =["abscond","act","a","armor","bio","check","chumcheck","chumroll","config","consume","debug","sendgrist","givegrist","giveitem","help","initialize","leaderboard","list","pass","pester","ping","possess","push","say","s","scratch","spawn","specibus","stats","strife","switch","sylladex","tutorial","trinket","trait","grist","sprite"];
   //standard argument/command name definition
   const args = message.content.slice(client.auth.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
@@ -102,7 +102,7 @@ let charid = client.userMap.get(userid,"possess");
     }
     //revive has to be allowed for dead players in the case of Godtiering.
     if(reg&&!alive&&preReg.indexOf(command)==-1){
-      if(command!="revive"&&command!="possess"){
+      if(command!="revive"&&command!="possess"&&command!="trait"){
       message.channel.send("It seems you are dead! Depending on your game, you might be revived, or you might be gone for good. Have fun!");
       return;
       }
@@ -121,7 +121,7 @@ let charid = client.userMap.get(userid,"possess");
   if (client.limit != 0) {
 	 client.user.setActivity("PESTERCORD TOURNAMENT");
   } else {
-    client.user.setActivity("Tablestuck Development");
+    client.user.setActivity("Sburb Prerelease");
   }
   // Run the command
 
