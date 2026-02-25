@@ -131,7 +131,7 @@
   },
   "acerbate":{
     "name" : "ACERBATE",
-    "cst"  : 6,
+    "cst"  : 3,
     "dmg" : 0,
     "aa": "INFLICT FROSTBITE ON NEXT ATTACKER",
     "add":["DEFROST"],
@@ -341,7 +341,7 @@
   },
   "arithmetize":{
     "name" : "ARITHMETIZE",
-    "cst"  : 6,
+    "cst"  : 3,
     "dmg" : 0,
     "aa": "INFLICT RANDOM STATUS EFFECT ON TARGET",
     "add":["RANDSTATUS"],
