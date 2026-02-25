@@ -186,9 +186,10 @@ try{
   client.charcall.setAnyData(client,userid,list[target][1],false,"alive");
   //if the character dying is a player, give kill credit.
 if(client.charcall.charData(client,list[target][1],"type")=="player"){
-    if(client.configcall.get(client, message, "DEATH")==0) {
-		client.charcall.setAnyData(client,userid,list[target][1],true,"alive");
-    }
+    //if(client.configcall.get(client, message, "DEATH")==0) {
+		//client.charcall.setAnyData(client,userid,list[target][1],true,"alive");
+		//return;
+    //}
 
   charid = client.userMap.get(userid,"possess");
   //as long as the killer has a character that tracks player kills, they get the credit.
@@ -536,7 +537,7 @@ return;
 }
 
 
-  if(!client.charcall.charData(client,charid,"alive")){
+if(!client.charcall.charData(client,charid,"alive")){
     if(client.charcall.allData(client,userid[0],charid,"dreamingID")=="NONE"){
       //if the character has no dreamself, it is likely an underling, so it is removed from the room
       //and the controller is pushed back to their default body.
@@ -556,11 +557,15 @@ return;
       return;
     }
     //switches the dreaming and waking self, and all those who control them, and makes sure that you haven't godtiered.
-    if(client.configcall.get(client, message, "death")==0&&(client.charcall.allData(client,userid,charid,"godtier")==false||client.charcall.allData(client,userid,charid,"godtier")=="NONE")){
+	console.log("DEATH CONFIG: "+client.configcall.get(client, message, "death"));
+    if((client.configcall.get(client, message, "death")==0&&client.charcall.allData(client,userid,charid,"godtier")==false)||client.charcall.allData(client,userid,charid,"godtier")=="NONE"){
+		console.log("Player fell unconscious.");
       if(client.charcall.allData(client,userid,charid,"dreamer")){
         target = client.charcall.allData(client,userid,charid,"wakingID");
+		client.charcall.setAnyData(client,userid,client.charcall.allData(client,userid,charid,"dreamingID"),true,"alive");
       } else {
         target = client.charcall.allData(client,userid,charid,"dreamingID");
+		client.charcall.setAnyData(client,userid,client.charcall.allData(client,userid,charid,"wakingID"),true,"alive");
       }
     (client.charcall.allData(client,userid,charid,"dreamer")?client.charcall.setAnyData(client,userid,charid,false,"dreamer"):client.charcall.setAnyData(client,userid,charid,true,"dreamer"));
     //up to here, the actual number of controllers has beeen arbitrary, since nothing was changed.
@@ -1266,13 +1271,13 @@ switch (local[0]){
   underlingChoice = ["basilisk","lich","giclopse"];
   break;
   case "s3d":
-  underlingChoice = ["lich","giclopse"];
+  underlingChoice = ["lich","wyrm"];
   break;
   case "s4":
   underlingChoice = ["lich","giclopse","titachnid"];
   break;
   case "s4d":
-  underlingChoice = ["giclopse","titachnid"];
+  underlingChoice = ["acheron","titachnid"];
   break;
 }
 if(rung < 5){

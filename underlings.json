@@ -77,6 +77,19 @@
     "drop":625,
     "img":"https://cdn.discordapp.com/attachments/408119077840617493/808234216285405224/giclops.png"
   },
+  "wyrm":{
+    "stm":20,
+    "vit":300,
+    "av":11,
+    "prefMove":"none",
+    "d":60,
+    "bd":[8,40],
+    "act":["absorb","arsonate","arrogate","argufy","ardor","abscond"],
+    "stats":[4,4,0,1,2,0],
+    "xp":512,
+    "drop":625,
+    "img":"https://file.garden/Z_W1uUldwUL6rf2p/wyrm.png"
+  },
   "kraken":{
     "stm":8,
     "vit":800,
@@ -88,7 +101,7 @@
     "stats":[4,4,0,1,2,0],
     "xp":512,
     "drop":1250,
-    "img":"https://cdn.discordapp.com/attachments/408119077840617493/808234216285405224/giclops.png"
+    "img":"https://file.garden/Z_W1uUldwUL6rf2p/kraken.png"
   },
   "titachnid":{
     "stm":6,
@@ -103,6 +116,19 @@
     "drop":3125,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234220866240522/titachnid_base.png"
   },
+  "acheron":{
+    "stm":4,
+    "vit":800,
+    "av":13,
+    "d":250,
+    "bd":[16,460],
+    "act":["assail","assault","account","abscond"],
+    "stats":[5,5,3,5,2,1],
+    "prefMove":"none",
+    "xp":2048,
+    "drop":3125,
+    "img":"https://file.garden/Z_W1uUldwUL6rf2p/acheron.png"
+  },
   "hecatoncheires":{
     "stm":10,
     "vit":1200,
@@ -115,6 +141,19 @@
     "xp":4096,
     "drop":6250,
     "img":"https://file.garden/Z_W1uUldwUL6rf2p/hecatonchires.png"
+  },
+  "denizen minion":{
+    "stm":12,
+    "vit":1000,
+    "av":12,
+    "d":300,
+    "bd":[300,500],
+    "act":["arithmetize","argufy","acerbate","ardor","abuse","abscond"],
+    "stats":[0,0,0,0,0,0],
+    "prefMove":"arithmetize",
+    "xp":8192,
+    "drop":12500,
+    "img":"https://file.garden/Z_W1uUldwUL6rf2p/DENIZEN_MINION.png"
   },
   "denizen":{
     "stm":12,

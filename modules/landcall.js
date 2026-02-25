@@ -531,7 +531,7 @@ if (denizen == false){
 for (d=0;d<4;d++){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
   dungeon [roomToFill[0][0]][roomToFill[0][1]] = [8,1,[[[],[],"DENIZEN MINION",false,[
-    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[client.lootcall.lootA(client, sec, dubs(8))]]]];
+    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'denizen minion', message),],[client.lootcall.lootA(client, sec, dubs(8))]]]];
 }
 
 } else if(sec=="m"){
@@ -655,7 +655,7 @@ if (denizen == false){
 for (d=0;d<4;d++){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
   dungeon [roomToFill[0][0]][roomToFill[0][1]] = [8,1,[[[],[],"DENIZEN MINION",false,[
-    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[client.lootcall.lootA(client, sec, dubs(8))]]]];
+    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'denizen minion', message),],[client.lootcall.lootA(client, sec, dubs(8))]]]];
 }
 
 }
