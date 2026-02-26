@@ -1498,6 +1498,7 @@ return occ;
 exports.jackSpawn = function(client,local,sessionID){
 
 let npcCount = client.landMap.get(sessionID+"medium","npcCount");
+let playerCount = client.landMap.get(sessionID+"medium","playerList").length;
 
 let occ = [];
 
@@ -1506,8 +1507,8 @@ let npcSet = {
     control:[],
     type: "archagent",
     faction: "underling",
-    vit:client.underlings["archagent"].vit,
-    gel:client.underlings["archagent"].vit,
+    vit:client.underlings["archagent"].vit+(playerCount*2000),
+    gel:client.underlings["archagent"].vit+(playerCount*2000),
     gristtype: "diamond",
     strife:false,
     pos:0,
@@ -1515,7 +1516,7 @@ let npcSet = {
     local:local,
     sdex:[],
     equip:0,
-    trinket:[],
+    trinket:[["OFFICIAL BADGE","vhfKQaFS",13,1,[]]],
     armor:[],
     spec:[],
     equip:0,

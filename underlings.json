@@ -234,7 +234,7 @@
   },
   "archagent":{
     "stm":16,
-    "vit":8000,
+    "vit":6000,
     "av":14,
     "prefMove":"accomplish",
     "d":100,
