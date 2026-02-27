@@ -1516,7 +1516,7 @@ let npcSet = {
     local:local,
     sdex:[],
     equip:0,
-    trinket:[["OFFICIAL BADGE","vhfKQaFS",13,1,[]]],
+    trinket:[["OFFICIAL BADGE","vhfSQaFS",13,1,[]]],
     armor:[],
     spec:[],
     equip:0,
@@ -1548,6 +1548,71 @@ let npcSet = {
   occ.push(occSet);
   client.landMap.set(sessionID+"medium",npcCount+1,"npcCount");
   return occ;	
+}
+
+exports.kingSpawn = function(client,local,lunar,sessionID){
+
+let npcCount = client.landMap.get(sessionID+"medium","npcCount");
+let playerCount = client.landMap.get(sessionID+"medium","playerList").length;
+let lunarList = ["BLACK KING","WHITE KING"];
+
+let sessionProto = client.landMap.get(sessionID+"medium",`prototype`);
+let protoCount = sessionProto.length>12?13:sessionProto.length;
+let numberWord = ["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Many"];
+
+let kingname = "";
+for(i=0;i<sessionProto.length;i++){
+      kingname += sessionProto[i][0]+` `;
+}
+
+let occ = [];
+
+let npcSet = {
+    name: `${kingname}${lunarList[lunar]}`,
+    control:[],
+    type: "king",
+    faction: "underling",
+    vit:client.underlings["archagent"].vit+(playerCount*2000),
+    gel:client.underlings["archagent"].vit+(playerCount*2000),
+    gristtype: "diamond",
+    strife:false,
+    pos:0,
+    alive:true,
+    local:local,
+    sdex:[],
+    equip:0,
+    trinket:[[`Staff of Orbs ${numberWord[protoCount]}-Fold`,"v!//33Fg",10,1,[]]],
+    armor:[],
+    spec:[],
+    equip:0,
+    scards:1,
+    kinds:[],
+    port:1,
+    modus:"STACK",
+    cards:4,
+    prototype:sessionProto,
+    prospitRep:lunar===0?-999999:100,
+    derseRep:lunar===0?100:-999999,
+    underlingRep:5,
+    playerRep:lunar===0?-999999:1,
+    consortRep:0,
+    prefTarg:[],
+    xp:0,
+    rung:0,
+    b:0,
+    bio:`The ${lunar===0?'Black':'White'} king. The final boss.`,
+    img:`${lunar===0?'https://file.garden/Z_W1uUldwUL6rf2p/BlackKing.png':'https://file.garden/Z_W1uUldwUL6rf2p/WhiteKing.png'}`,
+    questData:[],
+	following:"NONE",
+	followers:[]
+  }
+  
+  let id = `n${sessionID}/${npcCount}`;
+  client.npcMap.set(id,npcSet);
+  let occSet = [false,id];
+  occ.push(occSet);
+  client.landMap.set(sessionID+"medium",npcCount+1,"npcCount");
+  return occ;
 }
 
 exports.consortSpawn = function(client,message,coords,type,count){

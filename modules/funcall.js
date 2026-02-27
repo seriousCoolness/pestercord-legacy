@@ -915,7 +915,12 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
             targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,sessionID,false));
 		break;
         case "bf":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,sessionID,false),client.landcall.carSpawn(client,target,1,sessionID,false));
+		  if(target[2]===5&&target[1]===0)
+			targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.kingSpawn(client,target,0,sessionID));
+		  else if(target[2]===5&&target[1]===10)
+			targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.kingSpawn(client,target,1,sessionID));
+          else
+		    targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,sessionID,false),client.landcall.carSpawn(client,target,1,sessionID,false));
         break;
       }
     }else if(target[4]!=sessionID+"medium"){

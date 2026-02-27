@@ -244,6 +244,18 @@
 	"drop":0,
     "xp":10000
   },
+  "king":{
+    "stm":20,
+    "vit":8000,
+    "av":15,
+    "prefMove":"accomplish",
+    "d":100,
+    "bd":[20,800],
+    "act":["abuse","abscond"],
+    "stats":[0,0,0,0,0,0],
+	"drop":0,
+    "xp":999999
+  },
   "shopkeep":{
     "stm":8,
     "vit":200,
