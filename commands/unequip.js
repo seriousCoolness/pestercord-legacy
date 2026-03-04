@@ -111,6 +111,7 @@ exports.run = (client, message, args) => {
 		mess += `\nYour Sylladex is full, ejecting your ${dropItem[0]}!`;
 		sec[local[1]][local[2]][2][local[3]] = room;
 		client.landMap.set(land,sec,local[0]);
+		client.landcall.displayRoom(client,message);
 	}
 	
 	client.charcall.setAnyData(client,userid,charid,scards,"scards");
@@ -118,6 +119,7 @@ exports.run = (client, message, args) => {
 	client.charcall.setAnyData(client,userid,charid,trinket,"trinket");
 	client.charcall.setAnyData(client,userid,charid,armor,"armor");
 	client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+	client.charcall.displaySylladex(client,message,1);
 	client.funcall.actionCheck(client,message,"item");
 	client.funcall.tick(client,message);
 	message.channel.send(mess);

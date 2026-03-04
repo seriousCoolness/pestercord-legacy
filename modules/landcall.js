@@ -1703,7 +1703,7 @@ exports.currentRoom = function(client,message) {
 	return room;
 }
 
-exports.displayRoom = function(client, message, targRoom=undefined) {
+exports.displayRoom = function(client, message, slotChanged=undefined, targRoom=undefined) {
 	
 	var userid = message.guild.id.concat(message.author.id);
     var charid = client.userMap.get(userid,"possess");
@@ -1720,8 +1720,13 @@ exports.displayRoom = function(client, message, targRoom=undefined) {
 		
 		
 		async function roomCheck() {
-		const attachment = await client.imgcall.sdexCheck(client,message,0,[],3,dex,dex.length,room[2]);
-		client.tutorcall.progressCheck(client,message,3,["img",attachment]);
+			if(slotChanged==undefined) {
+				const attachment = await client.imgcall.sdexCheck(client,message,0,[],3,dex,dex.length,room[2]);
+				client.tutorcall.progressCheck(client,message,3,["img",attachment]);
+			} else {
+				const attachment = await client.imgcall.sdexCheck(client,message,Math.floor(slotChanged/10),[],3,dex,dex.length,room[2]);
+				client.tutorcall.progressCheck(client,message,3,["img",attachment]);
+			}
 		}
 		roomCheck();
 		return;
@@ -1730,8 +1735,13 @@ exports.displayRoom = function(client, message, targRoom=undefined) {
 		let dex = targRoom[5];
 		
 		async function roomCheck() {
-		const attachment = await client.imgcall.sdexCheck(client,message,0,[],3,dex,dex.length,targRoom[2]);
-		client.tutorcall.progressCheck(client,message,3,["img",attachment]);
+			if(slotChanged==undefined) {
+				const attachment = await client.imgcall.sdexCheck(client,message,0,[],3,dex,dex.length,targRoom[2]);
+				client.tutorcall.progressCheck(client,message,3,["img",attachment]);
+			} else {
+				const attachment = await client.imgcall.sdexCheck(client,message,Math.floor(slotChanged/10),[],3,dex,dex.length,targRoom[2]);
+				client.tutorcall.progressCheck(client,message,3,["img",attachment]);
+			}
 		}
 		roomCheck();
 		return;

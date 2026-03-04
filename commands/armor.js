@@ -107,6 +107,7 @@ exports.run = (client, message, args) => {
     sec[local[1]][local[2]][2][local[3]] = room;
     client.landMap.set(land,sec,local[0]);
     client.charcall.setAnyData(client,userid,charid,armor,"armor");
+	client.landcall.displayRoom(client,message);
     message.channel.send("Ejecting Armor!");
     client.funcall.tick(client,message);
 
@@ -164,7 +165,10 @@ exports.run = (client, message, args) => {
 
       client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
       client.charcall.setAnyData(client,userid,charid,armor,"armor");
+	  
+	  client.charcall.displaySylladex(client,message,selectDex);
       message.channel.send(`Successfully EQUIPPED the ${equipItem[0]}!`);
+	  
       client.funcall.tick(client,message);
 
   } else if(args[0]=="unequip"){

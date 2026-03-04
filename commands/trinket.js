@@ -92,6 +92,7 @@ exports.run = (client, message, args) => {
     client.landMap.set(land,sec,local[0]);
     client.charcall.setAnyData(client,userid,charid,trinket,"trinket");
 
+	client.landcall.displayRoom(client,message);
     message.channel.send("Ejecting TRINKET!")
     client.funcall.tick(client,message);
 
@@ -169,6 +170,7 @@ exports.run = (client, message, args) => {
       client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
       client.charcall.setAnyData(client,userid,charid,trinket,"trinket");
 
+	  client.charcall.displaySylladex(client,message,selectDex);
       message.channel.send(`Successfully EQUIPPED the ${equipItem[0]}!`);
       client.funcall.tick(client,message);
 

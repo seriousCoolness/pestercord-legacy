@@ -57,7 +57,7 @@ exports.run = (client, message, args) => {
       client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 	  
 	  //Display sylladex again.
-	  client.charcall.displaySylladex(client, message, args[0]);
+	  client.charcall.displaySylladex(client, message, args[0]-1);
       
 	  return;
     }
@@ -74,7 +74,7 @@ exports.run = (client, message, args) => {
       client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 	  
 	  //Display sylladex again.
-	  client.charcall.displaySylladex(client, message, args[0]);
+	  client.charcall.displaySylladex(client, message, args[0]-1);
       
 	  return;
     } else {
@@ -95,7 +95,7 @@ exports.run = (client, message, args) => {
             client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 			
 			//Display sylladex again.
-			client.charcall.displaySylladex(client, message, args[0]);
+			client.charcall.displaySylladex(client, message, args[0]-1);
       	
             return;
 
@@ -152,7 +152,7 @@ exports.run = (client, message, args) => {
           client.charcall.setAnyData(client, userid, charid, sdex, "sdex");
 		  
 		  //Display sylladex again.
-		  client.charcall.displaySylladex(client, message, args[0]);
+		  client.charcall.displaySylladex(client, message, args[0]-1);
       
         } else {
           message.channel.send("That is not a valid item!")
@@ -218,7 +218,7 @@ exports.run = (client, message, args) => {
             client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 			
 			//Display sylladex again.
-			client.charcall.displaySylladex(client, message, args[0]);
+			client.charcall.displaySylladex(client, message, args[0]-1);
 			
             return;
           } else {
@@ -266,7 +266,7 @@ exports.run = (client, message, args) => {
       client.charcall.setAnyData(client,userid,charid,cards,"cards");
       
 	  //Display sylladex again.
-	  client.charcall.displaySylladex(client, message);
+	  client.charcall.displaySylladex(client, message,args[0]-1);
 	  
 	  return;
     } else if(sdex[selectDex][1].charAt(0) == "/"){
@@ -318,7 +318,7 @@ exports.run = (client, message, args) => {
         client.charcall.setAnyData(client,userid,charid,cards,"scards");
 		
 		//Display sylladex again.
-	    client.charcall.displaySylladex(client, message, args[0]);
+	    client.charcall.displaySylladex(client, message, args[0]-1);
       
         return;
       }
@@ -357,7 +357,7 @@ exports.run = (client, message, args) => {
         message.channel.send(boonMsg);
 		
 	    //Display sylladex again.
-	    client.charcall.displaySylladex(client, message, args[0]);
+	    client.charcall.displaySylladex(client, message, args[0]-1);
 		
 		return;      
       } else if(sdex[selectDex][0]=="RAINBOW GRIST"){
@@ -377,7 +377,7 @@ exports.run = (client, message, args) => {
         client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 	  
 	    //Display sylladex again.
-	    client.charcall.displaySylladex(client, message, args[0]);
+	    client.charcall.displaySylladex(client, message, args[0]-1);
       
 	    return;
       } else if(sdex[selectDex][0]=="STRIFE SPECIBUS"){
@@ -394,7 +394,7 @@ exports.run = (client, message, args) => {
         client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 
 		//Display sylladex again.
-	    client.charcall.displaySylladex(client, message, args[0]);
+	    client.charcall.displaySylladex(client, message, args[0]-1);
       
 		return;
       }
@@ -424,7 +424,7 @@ exports.run = (client, message, args) => {
 		  sdex.unshift(newItem);
 		  client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 		  message.channel.send(`You have split your **${newItem[0].toUpperCase()}** stack in half!`);
-		  client.charcall.displaySylladex(client,message,args[0]);
+		  client.charcall.displaySylladex(client,message,args[0]-1);
 		  return;
 	  }
 	  else {

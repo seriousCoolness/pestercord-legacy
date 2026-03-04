@@ -9,6 +9,11 @@ exports.run = (client, message, args) => {
   var charid = client.userMap.get(userid,"possess");
   var spriteid = client.sburbMap.get(userid,"spriteID");
   
+  if(client.charcall.charData(client,charid,"strife")) {
+	message.channel.send("Cannot do this in strife!");
+	return;
+  }
+  
   if(spriteid=="") {
     message.channel.send("If only you had some sort of magic tutorial npc to heal you. Alas, such things surely are but make-believe...");
     return;

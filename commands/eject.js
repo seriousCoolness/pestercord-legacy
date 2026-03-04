@@ -91,7 +91,7 @@ exports.run = (client, message, args) => {
   client.funcall.tick(client,message);
   
   //Display room after being altered.
-client.landcall.displayRoom(client,message);
+client.landcall.displayRoom(client,message,room[5].length);
 
 //Display sylladex again.
 client.charcall.displaySylladex(client,message,args[0]);

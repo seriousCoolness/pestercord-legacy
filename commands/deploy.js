@@ -268,7 +268,7 @@ if(!args[0] || args[0] == "page") {
 
   let deployedItem = registry[value[0]][0].toUpperCase();
   message.channel.send(`Deployed the ${deployedItem}`);
-  client.landcall.displayRoom(client,message,clientSec[0][0][2][value[1]]);
+  client.landcall.displayRoom(client,message,clientSec[0][0][2][value[1]][5].length,clientSec[0][0][2][value[1]]);
 
   let alertClientList = ["CRUXTRUDER","TOTEM LATHE","ALCHEMITER","PRE-PUNCHED CARD","PUNCH DESIGNIX","INSTANT ALCHEMIZER","TRANSPORTALIZER"];
   if(alertClientList.includes(deployedItem)&&client.charcall.charData(client,targcharid,"local")[0]=="h"){
