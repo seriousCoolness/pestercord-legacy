@@ -97,6 +97,7 @@ exports.run = (client, message, args) => {
 
       let clientGates;
       let clientCheck = true;
+	  let unlockedCheck = client.landcall.gateCheck(client,message,value,targetLand);
 
       for(let i=0; i<tier && clientCheck; i++){
 
@@ -115,6 +116,11 @@ exports.run = (client, message, args) => {
         message.channel.send("That gate doesn't lead anywhere!");
         return;
       }
+	  
+	  if(!unlockedCheck){
+		message.channel.send(`As you touch the gate, it pulses with light. However, it does not transport you anywhere! It seems it must be unlocked from the other side${client.configcall.get(client,message,"GATES")==2?" by the proper player":""}.`);
+		return;
+	  }
 
       clientGates = client.landMap.get(targetLand,"gates");
 
@@ -167,11 +173,26 @@ exports.run = (client, message, args) => {
       message.channel.send("This gate doesn't lead anywhere!");
       return;
     }
-
     target = ["h",0,0,0,targetLand];
     mapCheck=false;
     msg+=`You enter the GATE and are transported to a `
 	destinationNotifier = 'entered a GATE';
+	
+	//unlock the gate depending on progression strictness.
+	let gateunlocks;
+	if(client.landMap.has(targetLand,"gateunlocks"))
+		gateunlocks = client.landMap.get(targetLand,"gateunlocks");
+	else
+		gateunlocks = [false,false,false];
+	
+	//send message, THEN unlock the gate.
+	let unlocked = client.landcall.gateUnlock(client,message,tier,userid,targetLand);
+	if(client.configcall.get(client,message,"GATES")!=0&&unlocked==true&&gateunlocks[tier-1]==false)
+		message.channel.send(`**GATE ${tier*2}** pulses and glows, and is now unlocked for bi-directional travel!`);
+	gateunlocks[tier-1] = unlocked;
+	
+	client.landMap.set(targetLand,gateunlocks,"gateunlocks");
+	
 	}
     break;
     case 1:

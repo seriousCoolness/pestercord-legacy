@@ -57,7 +57,7 @@ for(let i=0;i<configList.options.length;i++){
   return;
   }
 if(args[0].toLowerCase()==="reset"){
-client.configMap.set(message.guild.id,defaultConfig);
+client.configcall.generateSettings(client, message.guild.id);
 message.channel.send("Config file reset to default!");
 return;
 }

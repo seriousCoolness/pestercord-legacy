@@ -1747,3 +1747,60 @@ exports.displayRoom = function(client, message, slotChanged=undefined, targRoom=
 		return;
 	}
 }
+
+//checks if a player has unlocked the even-numbered gate by traveling through the land-gate on the other side.
+exports.gateCheck = function(client,message,gate,sburbid) {
+	let gateConfig = client.configcall.get(client,message,"GATES");
+	
+	switch(gateConfig) {
+		case 0:
+			return true;
+			break;
+		case 1:
+		case 2:
+			if(gate==2){
+				return client.landMap.get(sburbid,"gateunlocks")[0];
+			} else if(gate==4) {
+				return client.landMap.get(sburbid,"gateunlocks")[1];
+			} else if(gate==6) {
+				return client.landMap.get(sburbid,"gateunlocks")[2];
+			} else {
+				return true;
+			}
+			break;
+		default:
+			return true;
+	}
+}
+
+//checks whether to unlock the even-numbered gate or not.
+exports.gateUnlock = function(client,message,tier,userid,targlandid){
+	let gateConfig = client.configcall.get(client,message,"GATES");
+	
+	switch(gateConfig) {
+		case 0:
+		case 1:
+			return true;
+			break;
+		case 2:
+			//for GATE 2, checks the target land's client.
+			if(tier==1) {
+				let clientid = client.sburbMap.get(targlandid,"client");
+				return userid==clientid;
+			}
+			//for GATE 4, checks the target land's client's client.
+			if(tier==2) {
+				let clientid = client.sburbMap.get(targlandid,"client");
+				clientid = client.sburbMap.get(clientid,"client");
+				return userid==clientid;
+			}
+			//for GATE 6, checks the target land is owned by the unlocker.
+			if(tier==3) {
+				return userid==targlandid;
+			}
+			break;
+		default:
+			return true;
+			break;
+	}
+}

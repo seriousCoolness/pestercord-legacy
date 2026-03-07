@@ -45,6 +45,11 @@
       "desc" : "**What bonuses are provided by trinkets?**",
       "choices": ["No bonuses, only the traits","To-hit bonuses for all trinkets","To-hit for glasses, initiative for shoes, and occasional AV for hats."],
       "selection": 0
+  },{
+      "name" : "GATES",
+      "desc" : "**How strict is the gate progression?**",
+      "choices": ["Lenient - Even-numbered gates are multi-directional from the start.","Mixed - Even-numbered home-gates are locked until their land-gate is travelled through at least once. Can be unlocked by any player.","Strict - Even-numbered home-gates are locked until their land-gate is travelled through at least once. Can only be unlocked by the quest-owner."],
+      "selection": 0
   }
 ]
 }

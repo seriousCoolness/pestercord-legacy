@@ -548,6 +548,7 @@ async function finishLandGen(client,message,sburbid,aspect,gristSet,def){
       floors: 0,
       gate: 0,
       gates:gategen,
+	  gateunlocks:[false,false,false],
       h:def,
       s1:s1[0],
       s1d:s1[1],

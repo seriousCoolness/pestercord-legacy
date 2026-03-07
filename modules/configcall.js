@@ -46,22 +46,18 @@ function generateSettings(client, guildID){
 	let settings = {};
 
 	// Populate options Array
-	if(!client.configMap.has(guildID)){
-		let defaultConfig = require("../config.json");
-		console.log("creating a new config file!");
-		client.configMap.set(guildID,defaultConfig);
+	let defaultConfig = require("../config.json");
+	console.log("creating a new config file!");
+	client.configMap.set(guildID,defaultConfig);
 
-		options = client.configMap.get(guildID);
-		// If the default options file contains a settings dictionary, then we can just use that.
-		if(options.settings != undefined){
-			settings = options.settings;
-		}
+	options = client.configMap.get(guildID);
+	// If the default options file contains a settings dictionary, then we can just use that.
+	if(options.settings != undefined){
+		settings = options.settings;
+	}
 
-		options = options.options;
-	}
-	else{
-		options = client.configMap.get(guildID).options;
-	}
+	options = options.options;
+	
 	for(let i=0; i<options.length; i++){
 //	In terms of performance, it may be better to skip this part, and simply load EVERYTHING into settings.
 //		// All options created before the "default" field was added had a default value of 0.
