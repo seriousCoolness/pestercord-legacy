@@ -94,7 +94,7 @@ exports.run = (client, message, args) => {
 client.landcall.displayRoom(client,message,room[5].length);
 
 //Display sylladex again.
-client.charcall.displaySylladex(client,message,args[0]);
+client.charcall.displaySylladex(client,message,args[0]-1);
   
   client.funcall.roomMsg(client,message,`**${client.charcall.charData(client,charid,"name").toUpperCase()}** has ejected **${dropItem[0]}** [x${dropItem[3]}] in the room.`);
   
