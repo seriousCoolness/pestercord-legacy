@@ -114,8 +114,11 @@ exports.run = (client, message, args) => {
 
 	  //sixth gate should loop back two lands for gate quest.
 	  if(tier==3) {
+		  console.log(`looping back from... ${local[4]}`);
 		  targetLand = client.sburbMap.get(local[4],"server");
+		  console.log(`${client.sburbMap.get(targetLand,"name")}'s land.`);
 		  targetLand = client.sburbMap.get(targetLand,"server");
+		  console.log(`${client.sburbMap.get(targetLand,"name")}'s land.`);
 	  }
 	  if(!client.landMap.has(targetLand)) {
 		clientCheck = false;
@@ -180,8 +183,11 @@ exports.run = (client, message, args) => {
 
 	//sixth gate should loop back two lands for gate quest.
 	if(tier==3) {
+		console.log("looping back...");
 		targetLand = client.sburbMap.get(local[4],"client");
+		console.log(`${client.sburbMap.get(targetLand,"name")}'s land.`);
 		targetLand = client.sburbMap.get(targetLand,"client");
+		console.log(`${client.sburbMap.get(targetLand,"name")}'s land.`);
 	}
 	if(!client.landMap.has(targetLand)) {
 		clientCheck = false;
