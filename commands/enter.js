@@ -212,7 +212,7 @@ exports.run = (client, message, args) => {
 	
 	//send message, THEN unlock the gate.
 	let unlocked = client.landcall.gateUnlock(client,message,tier,userid,targetLand);
-	if((client.configcall.get(client,message,"GATES")!=0&&client.configcall.get(client,message,"GATES")!=undefined)&&unlocked==true&&gateunlocks[tier-1]==false)
+	if(!(client.configcall.get(client,message,"GATES")==0||client.configcall.get(client,message,"GATES")==undefined)&&unlocked==true&&gateunlocks[tier-1]==false)
 		message.channel.send(`**GATE ${tier*2}** pulses and glows, and is now unlocked for bi-directional travel!`);
 	gateunlocks[tier-1] = unlocked;
 	

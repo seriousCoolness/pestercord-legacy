@@ -1753,6 +1753,7 @@ exports.gateCheck = function(client,message,gate,sburbid) {
 	let gateConfig = client.configcall.get(client,message,"GATES");
 	
 	switch(gateConfig) {
+		case undefined:
 		case 0:
 			return true;
 			break;
