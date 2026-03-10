@@ -90,6 +90,7 @@ exports.run = (client, message, args) => {
   client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
   client.funcall.tick(client,message);
   
+  console.log(room[5]);
   //Display room after being altered.
 client.landcall.displayRoom(client,message,room[5].length);
 

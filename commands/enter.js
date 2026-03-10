@@ -112,6 +112,15 @@ exports.run = (client, message, args) => {
 		}
       }
 
+	  //sixth gate should loop back two lands for gate quest.
+	  if(tier==3) {
+		  targetLand = client.sburbMap.get(local[4],"server");
+		  targetLand = client.sburbMap.get(targetLand,"server");
+	  }
+	  if(!client.landMap.has(targetLand)) {
+		clientCheck = false;
+	  }
+
       if(!clientCheck||client.landMap.get(targetLand,"enter")==false){
         message.channel.send("That gate doesn't lead anywhere!");
         return;
@@ -169,10 +178,20 @@ exports.run = (client, message, args) => {
 	  }
 	}
 
+	//sixth gate should loop back two lands for gate quest.
+	if(tier==3) {
+		targetLand = client.sburbMap.get(local[4],"client");
+		targetLand = client.sburbMap.get(targetLand,"client");
+	}
+	if(!client.landMap.has(targetLand)) {
+		clientCheck = false;
+	}
+
     if(!serverCheck||!client.landMap.get(targetLand,"enter")){
       message.channel.send("This gate doesn't lead anywhere!");
       return;
     }
+	
     target = ["h",0,0,0,targetLand];
     mapCheck=false;
     msg+=`You enter the GATE and are transported to a `
