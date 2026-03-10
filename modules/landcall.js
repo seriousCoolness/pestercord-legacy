@@ -1751,7 +1751,7 @@ exports.displayRoom = function(client, message, slotChanged=undefined, targRoom=
 //checks if a player has unlocked the even-numbered gate by traveling through the land-gate on the other side.
 exports.gateCheck = function(client,message,gate,sburbid) {
 	let gateConfig = client.configcall.get(client,message,"GATES");
-	
+	console.log(gateConfig);
 	switch(gateConfig) {
 		case undefined:
 		case 0:
