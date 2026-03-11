@@ -119,6 +119,8 @@ exports.run = (client, message, args) => {
 		  console.log(`${client.sburbMap.get(targetLand,"name")}'s land.`);
 		  targetLand = client.sburbMap.get(targetLand,"server");
 		  console.log(`${client.sburbMap.get(targetLand,"name")}'s land.`);
+		  targetLand = client.sburbMap.get(targetLand,"server");
+		  console.log(`${client.sburbMap.get(targetLand,"name")}'s land.`);
 	  }
 	  if(!client.landMap.has(targetLand)) {
 		clientCheck = false;
@@ -185,6 +187,8 @@ exports.run = (client, message, args) => {
 	if(tier==3) {
 		console.log("looping back...");
 		targetLand = client.sburbMap.get(local[4],"client");
+		console.log(`${client.sburbMap.get(targetLand,"name")}'s land.`);
+		targetLand = client.sburbMap.get(targetLand,"client");
 		console.log(`${client.sburbMap.get(targetLand,"name")}'s land.`);
 		targetLand = client.sburbMap.get(targetLand,"client");
 		console.log(`${client.sburbMap.get(targetLand,"name")}'s land.`);
