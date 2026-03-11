@@ -92,7 +92,7 @@ exports.run = (client, message, args) => {
   
   console.log(room[5]);
   //Display room after being altered.
-client.landcall.displayRoom(client,message,room[5].length);
+client.landcall.displayRoom(client,message,room[5].length-1);
 
 //Display sylladex again.
 client.charcall.displaySylladex(client,message,args[0]-1);
