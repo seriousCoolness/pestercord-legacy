@@ -151,6 +151,12 @@ exports.run = (client, message, args) => {
     case 3:
     target = ["h",0,0,0,local[4]];
     mapCheck=false;
+	
+	if(client.landMap.get(local[4],"enter")==false) {
+		message.channel.send("The return node pulses, but nothing else happens. Perhaps its destination does not exist yet?");
+		return;
+	}
+	
     msg+=`You enter the RETURN NODE and are transported to a `
 	destinationNotifier = 'entered a RETURN NODE';
 
