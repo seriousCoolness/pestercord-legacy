@@ -235,11 +235,11 @@
   "archagent":{
     "stm":16,
     "vit":6000,
-    "av":14,
-    "prefMove":"accomplish",
+    "av":15,
+    "prefMove":"artillerate",
     "d":100,
     "bd":[20,800],
-    "act":["accomplish","artillerate","actualize","assess","assure","assimilate","assassinate","abscond"],
+    "act":["artillerate","actualize","assess","assure","assimilate","assassinate","abscond"],
     "stats":[0,0,0,0,0,0],
 	"drop":0,
     "xp":10000
