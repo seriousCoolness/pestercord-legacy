@@ -53,13 +53,15 @@ if(spawnList.indexOf(args[0].toLowerCase())==8) {
   let sec = client.landMap.get(local[4],local[0]);
   let occ = [];
   
+  let playerCount = client.landMap.get(sessionid+"medium","playerList").length;
+  
   let npcSet = {
     name: `Jack Noir`,
     control:[],
     type: "archagent",
     faction: "underling",
-    vit:client.underlings["archagent"].vit,
-    gel:client.underlings["archagent"].vit,
+    vit:client.underlings["archagent"].vit+(playerCount*2000),
+    gel:client.underlings["archagent"].vit+(playerCount*2000),
     gristtype: "diamond",
     strife:false,
     pos:0,
@@ -67,8 +69,8 @@ if(spawnList.indexOf(args[0].toLowerCase())==8) {
     local:local,
     sdex:[],
     equip:0,
-    trinket:[],
-    armor:[],
+    trinket:[["OFFICIAL BADGE","vhfS////",16,1,[]]],
+    armor:[["Agent Suit","shAS////",13,1,[]]],
     spec:[],
     equip:0,
     scards:1,
@@ -76,11 +78,11 @@ if(spawnList.indexOf(args[0].toLowerCase())==8) {
     port:1,
     modus:"STACK",
     cards:4,
-    prototype:[],
+    prototype:[["Noir","shFS////",16,1,[]]],
     prospitRep:-99999999,
     derseRep:1,
     underlingRep:1,
-    playerRep:-999,
+    playerRep:-9999999,
     consortRep:-100,
     prefTarg:[],
     xp:0,
@@ -88,7 +90,9 @@ if(spawnList.indexOf(args[0].toLowerCase())==8) {
     b:0,
     bio:`Archagent everlasting.`,
     img:"https://file.garden/Z_W1uUldwUL6rf2p/jack_noir.png",
-    questData:[]
+    questData:[],
+	following:"NONE",
+	followers:[]
   }
   
   let id = `n${sessionid}/${npcCount}`;
