@@ -862,6 +862,10 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
   let followers = client.charcall.charData(client,charid,"followers");
   for(let i=0;i<followers.length;i++) {
 	let followerLocal = client.charcall.charData(client,followers[i],"local");
+	
+	if(client.charcall.controlCheck(client,followers[i]))
+		client.funcall.chanMsg(client,followers[i],`${msg}**${targSec[target[1]][target[2]][2][target[3]][2]}**`);
+	
 	client.funcall.move(client,message,followers[i],followerLocal,target,mapCheck,msg,"following to",false);
   }
   

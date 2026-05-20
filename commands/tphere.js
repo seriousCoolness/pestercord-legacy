@@ -39,6 +39,11 @@ if(client.charcall.charData(client,targetid,"strife")){
   if(local[0]=="h"){
     mapCheck=false;
   }
+  
+  let following = client.charcall.charData(client,targetid,"following");
+  if(following!="NONE") {
+	  client.charcall.ceaseFollow(client,userid,targetid,following,"");
+  }
 
   client.funcall.move(client,message,targetid,target,local,mapCheck,`Teleporting to **${client.charcall.charData(client,charid,"name")}**\nEntering a `);
 

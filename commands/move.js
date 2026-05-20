@@ -104,6 +104,11 @@ exports.run = (client, message, args) => {
   
   client.funcall.roomMsg(client,message,`**${client.charcall.charData(client,charid,"name").toUpperCase()}** has left the room ${destinationNotifier}!`);
   
+  let following = client.charcall.charData(client,charid,"following");
+  if(following!="NONE") {
+	  client.charcall.ceaseFollow(client,userid,charid,following);
+  }
+  
   let move = client.funcall.move(client,message,charid,local,target,mapCheck,msg);
 
 }

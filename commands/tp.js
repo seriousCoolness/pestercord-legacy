@@ -52,6 +52,11 @@ exports.run = (client, message, args) => {
     mapCheck=false;
   }
   
+  let following = client.charcall.charData(client,charid,"following");
+  if(following!="NONE") {
+	  client.charcall.ceaseFollow(client,userid,charid,following);
+  }
+  
   client.charcall.checkFollowersCanFollow(client,userid,charid,"TP");
   client.funcall.move(client,message,charid,local,target,mapCheck,`Teleporting to **${client.charcall.charData(client,targetid,"name")}**\nEntering a `);
 

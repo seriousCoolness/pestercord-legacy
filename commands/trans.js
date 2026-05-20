@@ -117,6 +117,11 @@ if(args[0]=="set"){
 	  default: break;
   }
 
+  let following = client.charcall.charData(client,charid,"following");
+  if(following!="NONE") {
+	  client.charcall.ceaseFollow(client,userid,charid,following);
+  }
+
   let msg = "You are TRANSPORTALIZED to a ";
   client.funcall.move(client,message,charid,local,targetLocal,mapCheck,msg, "transportalizing to");
 }

@@ -329,6 +329,11 @@ exports.run = (client, message, args) => {
       console.log(err);
     }
   }
+  
+  let following = client.charcall.charData(client,charid,"following");
+  if(following!="NONE") {
+	  client.charcall.ceaseFollow(client,userid,charid,following);
+  }
 
   client.funcall.actionCheck(client,message);
   client.funcall.move(client,message,charid,local,target,mapCheck,msg);
