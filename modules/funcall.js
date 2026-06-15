@@ -863,10 +863,15 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
   for(let i=0;i<followers.length;i++) {
 	let followerLocal = client.charcall.charData(client,followers[i],"local");
 	
-	if(client.charcall.controlCheck(client,followers[i]))
+	if(client.charcall.controlCheck(client,followers[i]) && client.charcall.charData(client,followers[i],"strife")==false)
 		client.funcall.chanMsg(client,followers[i],`${msg}**${targSec[target[1]][target[2]][2][target[3]][2]}**`);
 	
-	client.funcall.move(client,message,followers[i],followerLocal,target,mapCheck,msg,"following to",false);
+	if(client.charcall.charData(client,followers[i],"strife")==true) {
+		client.charcall.ceaseFollow(client,userid,followers[i],charid);
+	}
+	else if(client.charcall.charData(client,followers[i],"strife")==false) {
+		client.funcall.move(client,message,followers[i],followerLocal,target,mapCheck,msg,"following to",false);
+	}
   }
   
   if(local[0]==target[0]&&local[4]==target[4]){
